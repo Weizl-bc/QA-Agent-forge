@@ -4,10 +4,7 @@ from langchain_core.language_models import BaseChatModel
 from agent_core.common.env_config import get_required_env
 
 
-
-def create_model(
-        temperature: float = 0.1,
-) -> BaseChatModel:
+def create_model(temperature: float = 0.1,) -> BaseChatModel:
     model_name = get_required_env("LLM_CHAT_MODEL_NAME")
     base_url = get_required_env("LLM_BASE_URL")
     api_key = get_required_env("LLM_API_KEY")
@@ -28,3 +25,4 @@ def create_model(
         temperature=temperature,
         api_key=api_key,
     )
+
