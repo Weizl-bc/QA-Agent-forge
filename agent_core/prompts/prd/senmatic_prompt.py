@@ -111,8 +111,15 @@ NORMALIZED_CONTENT_TO_SEMANTIC_PROMPT = """
 NORMALIZED_CONTENT_SEMANTIC_USER_PROMPT = """
 请从以下标准化 PRD 文本中提取 PrdSemanticBlock JSON 数组。
 
+【节点标题：事实上下文】
+{node_title}
+
 【标准化文本：唯一事实来源】
 {normalized_content}
+
+节点标题用于说明正文所属的字段或模块。例如标题为“支付方式”、正文为
+“寄付、到付”时，应提取“支付方式包含寄付和到付两个可选项”的语义，
+不得把孤立枚举值当作噪声。
 """
 
 
@@ -124,6 +131,9 @@ NORMALIZED_CONTENT_SEMANTIC_REPAIR_PROMPT = """
 
 【错误输出】
 {invalid_output}
+
+【节点标题：事实上下文】
+{node_title}
 
 【标准化文本：唯一事实来源】
 {normalized_content}

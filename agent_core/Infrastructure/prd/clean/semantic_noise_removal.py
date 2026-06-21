@@ -30,6 +30,20 @@ logger = structlog.get_logger(__name__)
 
 MAX_SEMANTIC_PARSE_ATTEMPTS = 2
 URL_ONLY_PATTERN = re.compile(r"^https?://\S+$")
+ENUM_GROUP_PATTERN = re.compile(r"[（(]([^()（）]+)[）)]")
+ENUM_SEPARATOR_PATTERN = re.compile(r"[，,、/|]")
+ENUM_SIGNAL_WORDS = ("枚举", "可选", "选项", "取值")
+ENUM_NOISE_VALUES = {
+    "todo",
+    "tbd",
+    "n/a",
+    "na",
+    "暂无",
+    "无",
+    "略",
+    "待定",
+    "待补充",
+}
 
 
 def _extract_url_only_references(content: str) -> list[str]:
@@ -57,7 +71,10 @@ def _parse_semantic_blocks(result: Any) -> list[PrdSemanticBlock]:
     ]
 
 
-def _llm_extract_semantic(normalized_content: str) -> list[PrdSemanticBlock]:
+def _llm_extract_semantic(
+    normalized_content: str,
+    node_title: str = "",
+) -> list[PrdSemanticBlock]:
     """
     仅根据标准化文本提取语义块。
 
@@ -74,6 +91,7 @@ def _llm_extract_semantic(normalized_content: str) -> list[PrdSemanticBlock]:
     ])
     result = (prompt | llm).invoke({
         "normalized_content": normalized_content,
+        "node_title": node_title,
     })
 
     for attempt in range(1, MAX_SEMANTIC_PARSE_ATTEMPTS + 1):
@@ -81,6 +99,8 @@ def _llm_extract_semantic(normalized_content: str) -> list[PrdSemanticBlock]:
             blocks = _parse_semantic_blocks(result)
             for block in blocks:
                 block.source_type = "content"
+                if node_title and not block.source_title:
+                    block.source_title = node_title
             return blocks
         except (json.JSONDecodeError, ValidationError, ValueError) as exc:
             response_content = extract_llm_content(result)
@@ -108,6 +128,7 @@ def _llm_extract_semantic(normalized_content: str) -> list[PrdSemanticBlock]:
                 "error": str(exc),
                 "invalid_output": response_content,
                 "normalized_content": normalized_content,
+                "node_title": node_title,
             })
 
     raise RuntimeError("语义提取重试流程异常结束")
@@ -197,18 +218,127 @@ def _llm_extract_semantic_with_raw_content(
 
     raise RuntimeError("语义提取重试流程异常结束")
 
-def _normalization_tree_content_llm(content: str) -> str:
+def _normalization_tree_content_llm(
+    content: str,
+    node_title: str = "",
+) -> str:
     """
     将mdNode中的content的不规范的文本统一为文本形式
     """
     llm = create_model(temperature=0)
     prompt = ChatPromptTemplate.from_messages([
         ("system", PARSER_MD_TO_NORMAL_TEXT_PROMPT),
-        ("human", "请将以下PRD内容标准化为纯文本，不要输出列表或JSON：{content}")
+        (
+            "human",
+            "【节点标题】{node_title}\n"
+            "【节点正文】\n{content}\n\n"
+            "请结合节点标题，将正文标准化为纯文本，不要输出列表或JSON。",
+        ),
     ])
     chain = prompt | llm
-    result = chain.invoke({"content": content})
+    result = chain.invoke({
+        "content": content,
+        "node_title": node_title,
+    })
     return extract_llm_content(result)
+
+
+def _extract_short_enum_values(content: str) -> list[str]:
+    """提取适合作为字段枚举的短行列表。"""
+    values = [
+        line.strip()
+        for line in content.splitlines()
+        if line.strip()
+    ]
+    if not 2 <= len(values) <= 20:
+        return []
+    if len(set(values)) != len(values):
+        return []
+    if any(len(value) > 30 for value in values):
+        return []
+    if any(URL_ONLY_PATTERN.fullmatch(value) for value in values):
+        return []
+    if any(re.search(r"[。！？!?；;]", value) for value in values):
+        return []
+    if any(value.lower() in ENUM_NOISE_VALUES for value in values):
+        return []
+    return values
+
+
+def _normalized_content_confirms_enum(
+    node_title: str,
+    values: list[str],
+    normalized_content: str,
+) -> bool:
+    """确认标准化文本确实把短行列表表达为标题字段的枚举集合。"""
+    if not node_title or node_title not in normalized_content:
+        return False
+    if not all(value in normalized_content for value in values):
+        return False
+
+    for group in ENUM_GROUP_PATTERN.findall(normalized_content):
+        group_values = {
+            value.strip()
+            for value in ENUM_SEPARATOR_PATTERN.split(group)
+            if value.strip()
+        }
+        if set(values).issubset(group_values):
+            return True
+
+    return any(signal in normalized_content for signal in ENUM_SIGNAL_WORDS)
+
+
+def _build_enum_fallback_block(
+    node: MdNode,
+) -> PrdSemanticBlock | None:
+    """
+    当 LLM 漏抽取时，为明确的“字段标题 + 短枚举列表”生成确定性语义块。
+
+    只描述文档中明确存在的可选项，不补充各枚举值的领域解释。
+    """
+    if node.children:
+        return None
+
+    values = _extract_short_enum_values(node.content)
+    if not values or not _normalized_content_confirms_enum(
+        node_title=node.title,
+        values=values,
+        normalized_content=node.normalized_content,
+    ):
+        return None
+
+    return PrdSemanticBlock(
+        raw_text=node.content,
+        block_type="constraint",
+        source_type="content",
+        constraints=[
+            f"{node.title}的可选项为：{'、'.join(values)}"
+        ],
+        entities=list(dict.fromkeys([node.title, *values])),
+        is_noise=False,
+        source_title=node.title,
+    )
+
+
+def _semantic_blocks_cover_enum(
+    blocks: list[PrdSemanticBlock],
+    enum_block: PrdSemanticBlock,
+) -> bool:
+    """判断已有非噪声语义块是否覆盖了全部枚举值。"""
+    enum_values = enum_block.entities[1:]
+    semantic_parts: list[str] = []
+    for block in blocks:
+        if block.is_noise:
+            continue
+        semantic_parts.extend([
+            block.raw_text,
+            *block.conditions,
+            *block.actions,
+            *block.constraints,
+            *block.entities,
+        ])
+    semantic_text = "\n".join(semantic_parts)
+    return all(value in semantic_text for value in enum_values)
 
 
 def _normalize_and_extract_node(node: MdNode) -> None:
@@ -240,7 +370,10 @@ def _normalize_and_extract_node(node: MdNode) -> None:
         return
 
     try:
-        node.normalized_content = _normalization_tree_content_llm(node.content)
+        node.normalized_content = _normalization_tree_content_llm(
+            node.content,
+            node_title=node.title,
+        )
     except Exception as exc:
         node_logger.exception(
             "semantic_node_normalization_failed",
@@ -265,9 +398,24 @@ def _normalize_and_extract_node(node: MdNode) -> None:
     extraction_started_at = perf_counter()
     node_logger.info("semantic_node_extraction_started")
     try:
-        node.semantic_blocks = _llm_extract_semantic(
+        semantic_blocks = _llm_extract_semantic(
             normalized_content=node.normalized_content,
+            node_title=node.title,
         )
+        enum_fallback = _build_enum_fallback_block(node)
+        if (
+            enum_fallback is not None
+            and not _semantic_blocks_cover_enum(
+                semantic_blocks,
+                enum_fallback,
+            )
+        ):
+            semantic_blocks.append(enum_fallback)
+            node_logger.warning(
+                "semantic_enum_fallback_applied",
+                enum_value_count=len(enum_fallback.entities) - 1,
+            )
+        node.semantic_blocks = semantic_blocks
     except Exception as exc:
         node_logger.exception(
             "semantic_node_extraction_failed",
