@@ -14,7 +14,7 @@ class MdImageRef(BaseModel):
     raw_markdown: str = ""
     alt_text: Optional[str] = None
     src: str
-    title: str
+    title: Optional[str] = None
     local_path: Optional[str] = None
     image_type: str = "unknown"
     ocr_text: str = ""

@@ -1,7 +1,7 @@
 from langchain.chat_models import init_chat_model
 from langchain_core.language_models import BaseChatModel
 
-from agent_core.common.env_config import get_required_env
+from agent_core.common.env_config import get_env, get_required_env
 from agent_core.prompts.prd.parser_md_prompt import PARSER_MD_IMG_TO_NORMAL_TEXT_PROMPT
 
 
@@ -9,6 +9,8 @@ def create_model(temperature: float = 0.1,) -> BaseChatModel:
     model_name = get_required_env("LLM_CHAT_MODEL_NAME")
     base_url = get_required_env("LLM_BASE_URL")
     api_key = get_required_env("LLM_API_KEY")
+    request_timeout = float(get_env("LLM_REQUEST_TIMEOUT", "180"))
+    max_retries = int(get_env("LLM_MAX_RETRIES", "2"))
 
     if not model_name:
         raise ValueError("缺少环境变量：LLM_CHAT_MODEL_NAME")
@@ -25,6 +27,8 @@ def create_model(temperature: float = 0.1,) -> BaseChatModel:
         base_url=base_url,
         temperature=temperature,
         api_key=api_key,
+        timeout=request_timeout,
+        max_retries=max_retries,
     )
 
 
@@ -32,6 +36,8 @@ def create_mllm(temperature: float = 0.1) -> BaseChatModel:
     model_name = get_required_env("MLLM_MODEL_NAME")
     base_url = get_required_env("MLLM_BASE_URL")
     api_key = get_required_env("MLLM_API_KEY")
+    request_timeout = float(get_env("MLLM_REQUEST_TIMEOUT", "180"))
+    max_retries = int(get_env("MLLM_MAX_RETRIES", "2"))
 
     if not model_name:
         raise ValueError("缺少环境变量：MLLM_MODEL_NAME")
@@ -48,6 +54,8 @@ def create_mllm(temperature: float = 0.1) -> BaseChatModel:
         base_url=base_url,
         temperature=temperature,
         api_key=api_key,
+        timeout=request_timeout,
+        max_retries=max_retries,
     )
 
 

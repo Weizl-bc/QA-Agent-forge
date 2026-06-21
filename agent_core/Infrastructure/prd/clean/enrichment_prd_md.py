@@ -1,3 +1,6 @@
+from concurrent.futures import ThreadPoolExecutor
+from typing import Callable
+
 from langchain_core.prompts import ChatPromptTemplate
 
 from agent_core.common.llm_result_validate_util import parse_llm_string_list
@@ -114,13 +117,44 @@ def _enrichment_md_node_type(node: MdNode) -> None:
     node.node_type = node_type
 
 
-def enrichment_prd_md(mdNode: MdNode) -> None:
+def enrichment_prd_md(
+    mdNode: MdNode,
+    max_workers: int = 4,
+) -> None:
     """
-    语义增强
-    """
-    _enrichment_md_node_type(mdNode)
+    语义增强。
 
+    每个语义块的动作、条件、约束、实体提取都是独立任务。
+    所有任务共用一个有界线程池，避免嵌套线程导致请求数失控。
+    """
+    if max_workers < 1:
+        raise ValueError("max_workers 必须大于等于 1")
+
+    tasks: list[
+        tuple[Callable[[PrdSemanticBlock], None], PrdSemanticBlock]
+    ] = []
     def handler(node: MdNode) -> None:
-        for block in node.semantic_blocks: _enrichment_semantic_block(block)
+        _enrichment_md_node_type(node)
+        for block in node.semantic_blocks:
+            tasks.extend([
+                (_enrichment_semantic_actions, block),
+                (_enrichment_semantic_conditions, block),
+                (_enrichment_semantic_constraints, block),
+                (_enrichment_semantic_entities, block),
+            ])
 
     walk_md_tree(mdNode, handler)
+
+    if not tasks:
+        return
+
+    with ThreadPoolExecutor(
+        max_workers=min(max_workers, len(tasks)),
+        thread_name_prefix="prd-enrichment",
+    ) as executor:
+        futures = [
+            executor.submit(task, block)
+            for task, block in tasks
+        ]
+        for future in futures:
+            future.result()
