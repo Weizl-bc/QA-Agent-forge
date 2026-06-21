@@ -20,6 +20,7 @@ class MdNode(BaseModel):
     title: str
     level: int
     content: str = ""
+    source_path: str = ""
     normalized_content: str = ""    # LLM归一化结果
     node_type: str = "section"  # section / requirement / api / rule / reference
     semantic_blocks: list["PrdSemanticBlock"] = field(default_factory=list)

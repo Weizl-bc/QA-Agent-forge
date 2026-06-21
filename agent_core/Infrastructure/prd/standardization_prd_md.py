@@ -151,6 +151,7 @@ def standardization_prd_md(input_path: str) -> MdNode:
     node = _parser_md_prd_to_tree(input_path)
     _prd_img_processor(node)
     _prd_content_standardization(node)
+    _fill_source_context(node)
 
     return node
 
@@ -534,17 +535,19 @@ def _split_oversized_node_content(
         stack.extend(reversed(node.children))
 
 
-def _fill_image_source_context(root: MdNode) -> None:
-    """为图片补充所属节点 id、标题和完整业务路径。"""
+def _fill_source_context(root: MdNode) -> None:
+    """为节点及其图片补充完整业务路径。"""
     stack: list[tuple[MdNode, list[str]]] = [(root, [])]
     while stack:
         node, parent_path = stack.pop()
+        path_title = node.title.strip().rstrip("：:")
         current_path = (
             parent_path
             if node.id == "root"
-            else [*parent_path, node.title]
+            else [*parent_path, path_title]
         )
         path_text = " / ".join(current_path)
+        node.source_path = path_text
 
         for image in node.images:
             image.source_node_id = node.id
@@ -651,7 +654,7 @@ def _parser_md_prd_to_business_tree(
         node_counter,
         max_node_content_chars,
     )
-    _fill_image_source_context(root)
+    _fill_source_context(root)
     return root
 
 
