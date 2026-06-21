@@ -61,3 +61,71 @@ MD_NODE_TO_SEMANTIC_PROMPT = """
 - 禁止合并不同语义
 - 禁止缺字段
 """
+
+
+NORMALIZED_CONTENT_TO_SEMANTIC_PROMPT = """
+你是一个 PRD 语义解析器。
+
+请仅根据标准化后的 PRD 文本，将内容拆分为 PrdSemanticBlock JSON 数组。
+标准化文本是唯一事实来源，不得引用、猜测或补充输入中不存在的信息。
+
+输出要求：
+1. 只能输出 JSON 数组，不得输出 Markdown、代码块或解释。
+2. 每个数组元素只表达一个最小且独立的语义单元。
+3. raw_text 必须是标准化文本中的连续原文片段，不得改写。
+4. 不同业务条件、动作、约束或对象应拆分到适当的语义块中。
+5. 所有字段都必须存在；没有内容的列表字段返回空数组。
+6. TODO、待补充、略、占位、仅有问号等无有效需求的信息，
+   必须设置 is_noise=true。
+
+每个数组元素必须符合以下结构：
+
+{
+  "raw_text": "string",
+  "block_type": "rule | description | constraint | exception | flow",
+  "source_type": "content",
+  "conditions": ["string"],
+  "actions": ["string"],
+  "constraints": ["string"],
+  "entities": ["string"],
+  "is_noise": false,
+  "source_node_path": null,
+  "source_title": null,
+  "embedding": null
+}
+
+字段分类：
+- conditions：触发条件、前置条件、判断条件。
+- actions：用户操作、系统处理、状态变化或页面跳转。
+- constraints：必填、唯一性、范围、次数、状态、权限或拦截规则。
+- entities：用户、角色、订单、页面、按钮、字段、状态或外部系统。
+"""
+
+
+NORMALIZED_CONTENT_SEMANTIC_USER_PROMPT = """
+请从以下标准化 PRD 文本中提取 PrdSemanticBlock JSON 数组。
+
+【标准化文本：唯一事实来源】
+{normalized_content}
+"""
+
+
+NORMALIZED_CONTENT_SEMANTIC_REPAIR_PROMPT = """
+以下模型输出无法解析为 PrdSemanticBlock JSON 数组。
+
+【解析错误】
+{error}
+
+【错误输出】
+{invalid_output}
+
+【标准化文本：唯一事实来源】
+{normalized_content}
+
+请修复输出格式并重新输出。
+要求：
+1. 只能输出合法 JSON 数组，不得输出 Markdown 或解释。
+2. 每个数组元素必须符合 PrdSemanticBlock 字段结构。
+3. raw_text 必须来自标准化文本中的连续片段。
+4. 不得增加标准化文本中不存在的信息。
+"""

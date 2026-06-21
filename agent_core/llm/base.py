@@ -1,9 +1,11 @@
+import structlog
 from langchain.chat_models import init_chat_model
 from langchain_core.language_models import BaseChatModel
 
 from agent_core.common.env_config import get_env, get_required_env
 from agent_core.prompts.prd.parser_md_prompt import PARSER_MD_IMG_TO_NORMAL_TEXT_PROMPT
 
+logger = structlog.get_logger(__name__)
 
 def create_model(temperature: float = 0.1,) -> BaseChatModel:
     model_name = get_required_env("LLM_CHAT_MODEL_NAME")
@@ -73,7 +75,6 @@ def call_mllm_with_image(img_url: str, prompt: str, temperature: float = 0.1) ->
 
 
 if __name__ == "__main__":
-    print(call_mllm_with_image(
-        "https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/a/6KYkegJwXTGAPzEb/38d948d4f0c64ca092378470dc76eafa3905.png",
-        PARSER_MD_IMG_TO_NORMAL_TEXT_PROMPT,
-    ))
+    logger.info("开始调用模型")
+    print(create_model().invoke("你是什么模型"))
+    logger.info("模型调用结束")

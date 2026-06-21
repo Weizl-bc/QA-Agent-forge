@@ -7,6 +7,7 @@
    1. 抽象为树模型：把文章分拆分为大段落、小段落，父段落、子段落（md_node）
    2. 把content中的不规则段落，整合为一句话的形式
    3. 图片处理：识别prd中的流程图、业务图等等。最后挂载到node节点中
+   4. 把 md中很大的content分割，利用
 3. 文档清洗（md_node）
    1. 结构清洗（Structural Cleaning）（md_node）
    2. 语义噪声清洗（Semantic Noise Removal）（PrdSemanticBlock）
