@@ -111,6 +111,9 @@ def _enrichment_md_node_type(node: MdNode) -> None:
     if any(k in text for k in ["异常", "失败", "错误", "拦截", "提示"]):
         node_type =  "exception"
 
+    if node.references and not node.content.strip() and not node.semantic_blocks:
+        node_type = "reference"
+
     if node.semantic_blocks:
         node_type =  "requirement"
 

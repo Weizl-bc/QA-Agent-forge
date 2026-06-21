@@ -21,10 +21,11 @@ class MdNode(BaseModel):
     level: int
     content: str = ""
     normalized_content: str = ""    # LLM归一化结果
-    node_type: str = "section" # section / requirement / api / rule
+    node_type: str = "section"  # section / requirement / api / rule / reference
     semantic_blocks: list["PrdSemanticBlock"] = field(default_factory=list)
     children: list["MdNode"] = field(default_factory=list)  # 语义
     images: list[MdImageRef] = field(default_factory=list)
+    references: list[str] = field(default_factory=list)
 
     def remove_this_node(self, predicate: Callable[["MdNode"], bool]) -> int:
         """

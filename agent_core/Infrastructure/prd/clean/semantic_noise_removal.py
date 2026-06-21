@@ -1,4 +1,5 @@
 import json
+import re
 from concurrent.futures import ThreadPoolExecutor
 from time import perf_counter
 from typing import Any
@@ -28,6 +29,19 @@ from agent_core.prompts.prd.senmatic_prompt import (
 logger = structlog.get_logger(__name__)
 
 MAX_SEMANTIC_PARSE_ATTEMPTS = 2
+URL_ONLY_PATTERN = re.compile(r"^https?://\S+$")
+
+
+def _extract_url_only_references(content: str) -> list[str]:
+    """仅当正文由一个或多个 URL 行组成时返回这些引用。"""
+    lines = [
+        line.strip()
+        for line in content.splitlines()
+        if line.strip()
+    ]
+    if lines and all(URL_ONLY_PATTERN.fullmatch(line) for line in lines):
+        return list(dict.fromkeys(lines))
+    return []
 
 
 def _parse_semantic_blocks(result: Any) -> list[PrdSemanticBlock]:
@@ -207,6 +221,23 @@ def _normalize_and_extract_node(node: MdNode) -> None:
     node_started_at = perf_counter()
     normalization_started_at = perf_counter()
     node_logger.info("semantic_node_normalization_started")
+
+    url_references = _extract_url_only_references(node.content)
+    if url_references:
+        node.references.extend(
+            reference
+            for reference in url_references
+            if reference not in node.references
+        )
+        node.content = ""
+        node.normalized_content = ""
+        node.semantic_blocks = []
+        node_logger.info(
+            "semantic_node_normalization_skipped",
+            reason="url_only_content",
+            reference_count=len(url_references),
+        )
+        return
 
     try:
         node.normalized_content = _normalization_tree_content_llm(node.content)

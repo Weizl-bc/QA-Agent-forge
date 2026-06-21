@@ -21,6 +21,16 @@ MD_IMAGE_PATTERN = re.compile(
     r'!\[(?P<alt>[^\]]*)\]\((?P<src>[^)\s]+)'
     r'(?:\s+"(?P<title>[^"]*)")?\)'
 )
+MD_LINK_PATTERN = re.compile(
+    r'\[(?P<label>[^\]]*)\]\((?P<target>[^)\s]+)'
+    r'(?:\s+"[^"]*")?\)'
+)
+PLAIN_URL_PATTERN = re.compile(r"https?://[^\s<>()\[\]\"']+")
+REFERENCE_FILE_PATTERN = re.compile(
+    r"^(?:file://\S+|(?:[A-Za-z]:[\\/]|/|\./|\.\./)?\S+"
+    r"\.(?:pdf|docx?|xlsx?|csv|pptx?|zip|rar))$",
+    flags=re.IGNORECASE,
+)
 
 @dataclass
 class MarkdownListItem:
@@ -170,6 +180,51 @@ def _clean_inline_markdown(text: str) -> str:
     return text.replace("`", "").strip()
 
 
+def _normalize_reference(reference: str) -> str:
+    """清理引用目标末尾可能被 URL 正则吞入的标点。"""
+    return reference.rstrip(".,;:!?，。；：！？、")
+
+
+def _split_text_and_references(text: str) -> tuple[str, list[str]]:
+    """
+    将列表项中的外部引用与业务正文分离。
+
+    纯 URL、纯 Markdown 链接和纯附件名不会进入 content；带有业务说明的
+    混合文本保留可读标签和说明，同时把链接目标写入 references。
+    """
+    references = [
+        _normalize_reference(match.group("target"))
+        for match in MD_LINK_PATTERN.finditer(text)
+    ]
+    text_without_links = MD_LINK_PATTERN.sub("", text)
+    references.extend(
+        _normalize_reference(match.group(0))
+        for match in PLAIN_URL_PATTERN.finditer(text_without_links)
+    )
+
+    cleaned_text = _clean_inline_markdown(text)
+    if not references and REFERENCE_FILE_PATTERN.fullmatch(cleaned_text):
+        return "", [cleaned_text]
+    if not references:
+        return cleaned_text, []
+
+    meaningful_remainder = _clean_inline_markdown(
+        PLAIN_URL_PATTERN.sub("", text_without_links)
+    ).strip(" \t\r\n，。；：;:、")
+    if not meaningful_remainder:
+        return "", list(dict.fromkeys(references))
+
+    content_without_urls = PLAIN_URL_PATTERN.sub(
+        "",
+        MD_LINK_PATTERN.sub(
+            lambda match: match.group("label"),
+            text,
+        ),
+    )
+    content = _clean_inline_markdown(content_without_urls).strip()
+    return content, list(dict.fromkeys(references))
+
+
 def _extract_images_from_text(
     text: str,
     image_counter: Iterator[int],
@@ -290,7 +345,7 @@ def _extract_list_item_title_and_content(text: str) -> tuple[str, str]:
     bold_match = re.match(r"^\s*\*\*(.+?)\*\*(.*)$", text, flags=re.S)
     if bold_match:
         title = _clean_inline_markdown(bold_match.group(1)).rstrip("：:")
-        remaining = _clean_inline_markdown(bold_match.group(2))
+        remaining = bold_match.group(2).strip()
         return title, remaining
 
     clean_text = _clean_inline_markdown(text)
@@ -353,12 +408,16 @@ def _convert_list_items_to_md_nodes(
             title, remaining_content = _extract_list_item_title_and_content(
                 item.text
             )
+            content, references = _split_text_and_references(
+                remaining_content
+            )
             business_node = MdNode(
                 id=f"node-{next(node_counter)}",
                 title=title,
                 level=parent.level + 1,
-                content=remaining_content,
+                content=content,
                 images=list(item.images),
+                references=references,
             )
             parent.children.append(business_node)
             _convert_list_items_to_md_nodes(
@@ -368,7 +427,14 @@ def _convert_list_items_to_md_nodes(
             )
             continue
 
-        _append_node_content(parent, item.text)
+        content, references = _split_text_and_references(item.text)
+        if content:
+            _append_node_content(parent, content)
+        parent.references.extend(
+            reference
+            for reference in references
+            if reference not in parent.references
+        )
         parent.images.extend(item.images)
         _convert_list_items_to_md_nodes(
             item.children,
@@ -562,7 +628,14 @@ def _parser_md_prd_to_business_tree(
                 token.content,
                 image_counter,
             )
-            _append_node_content(current_node, clean_text)
+            content, references = _split_text_and_references(clean_text)
+            if content:
+                _append_node_content(current_node, content)
+            current_node.references.extend(
+                reference
+                for reference in references
+                if reference not in current_node.references
+            )
             current_node.images.extend(images)
             index += 1
             continue
