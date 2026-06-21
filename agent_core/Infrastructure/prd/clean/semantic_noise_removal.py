@@ -47,6 +47,7 @@ def _llm_extract_semantic(raw_content: str, normalized_content: str) -> list[Prd
         PrdSemanticBlock.model_validate(x)
         for x in data
     ]
+    for block in blocks: block.source_type = "content"
     return blocks
 
 def _normalization_tree_content_llm(content: str) -> str:

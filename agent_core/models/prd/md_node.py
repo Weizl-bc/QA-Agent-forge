@@ -1,8 +1,9 @@
-from dataclasses import field
+from dataclasses import field, Field
 from typing import Callable
 
 from pydantic import BaseModel
 
+from agent_core.models.prd.md_image_ref import MdImageRef
 from agent_core.models.prd.prd_semantic_block import PrdSemanticBlock
 
 
@@ -23,7 +24,7 @@ class MdNode(BaseModel):
     node_type: str = "section" # section / requirement / api / rule
     semantic_blocks: list["PrdSemanticBlock"] = field(default_factory=list)
     children: list["MdNode"] = field(default_factory=list)  # 语义
-
+    images: list[MdImageRef] = field(default_factory=list)
 
     def remove_this_node(self, predicate: Callable[["MdNode"], bool]) -> int:
         """
