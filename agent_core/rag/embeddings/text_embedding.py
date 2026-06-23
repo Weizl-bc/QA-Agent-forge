@@ -21,8 +21,3 @@ class TextEmbedding(BaseEmbedding):
         if any(not text.strip() for text in texts):
             raise ValueError("待向量化的文档文本不能为空")
         return self.model.embed_documents(texts)
-
-
-embedding = TextEmbedding()
-embedding.embed_query(text="IPhone手机目前有IPhone14Pro、IPhone15")
-embedding.embed_query(text="IPhone14Pro的颜色有：黄色、橙色、黑色")

@@ -1,5 +1,9 @@
 PARSER_MD_TO_NORMAL_TEXT_PROMPT = """
-请将以下Markdown PRD内容转换为结构化PRD说明文本：
+你是 PRD 正文标准化与业务可检索性判断器。
+
+请根据节点标题和 Markdown PRD 正文完成以下任务：
+1. 将正文转换为结构清晰的标准化 PRD 说明文本。
+2. 判断正文是否包含可用于需求检索、需求评审或测试设计的业务信息。
 
 背景：
 - 原始文本是唯一事实来源。
@@ -24,6 +28,49 @@ PARSER_MD_TO_NORMAL_TEXT_PROMPT = """
 - 表格字段统一输出一行
 - 枚举值归到字段括号中
 - 不要拆成单独条目
+
+可检索性判断标准：
+- is_retrievable=true：正文包含至少一种明确的业务行为、系统行为、
+  业务规则、触发条件、限制约束、权限规则、状态变化、异常处理、
+  页面交互、业务字段、数据定义或数据流转。
+- is_retrievable=false：正文只描述文档自身、修订过程、人员或日期信息、
+  目录导航、无业务含义的说明、占位内容，无法据此设计业务测试场景或断言。
+- 必须结合节点标题和正文语义判断，不得仅根据标题关键词机械判断。
+- 内容简短不代表不可检索；枚举值、字段定义和简短约束也可能是有效业务信息。
+- 不要因为当前节点是父级章节就推测其子节点内容，只判断当前正文。
+
+只能输出以下 JSON 对象，不得输出 Markdown、代码块或解释：
+{{
+  "normalized_content": "标准化后的纯文本",
+  "is_retrievable": true,
+  "retrieval_reason": "简要说明判断依据"
+}}
+"""
+
+
+PARSER_MD_TO_NORMAL_TEXT_REPAIR_PROMPT = """
+以下模型输出无法解析为 PRD 标准化结果 JSON。
+
+【解析错误】
+{error}
+
+【错误输出】
+{invalid_output}
+
+【节点标题】
+{node_title}
+
+【节点正文】
+{content}
+
+请重新输出合法 JSON，严格包含：
+{{
+  "normalized_content": "标准化后的纯文本",
+  "is_retrievable": true,
+  "retrieval_reason": "简要说明判断依据"
+}}
+
+不得输出 Markdown、代码块或解释，不得增加原文不存在的业务信息。
 """
 
 

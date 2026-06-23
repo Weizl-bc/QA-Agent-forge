@@ -170,7 +170,13 @@ def image_semantic_extraction(
         ]
         for node, image, future in futures:
             try:
-                node.semantic_blocks.extend(future.result())
+                image_blocks = future.result()
+                node.semantic_blocks.extend(image_blocks)
+                if any(not block.is_noise for block in image_blocks):
+                    node.is_retrievable = True
+                    node.retrieval_reason = (
+                        "节点图片包含可用于需求分析或测试设计的业务语义"
+                    )
             except Exception as exc:
                 logger.exception(
                     "图片语义抽取失败, node_id=%s, image_id=%s, image_src=%s",

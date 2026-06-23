@@ -23,6 +23,8 @@ class MdNode(BaseModel):
     content: str = ""
     source_path: str = ""
     normalized_content: str = ""    # LLM归一化结果
+    is_retrievable: bool = True  # 是否允许进入业务知识向量库
+    retrieval_reason: str = ""  # 可检索性判断依据
     node_type: str = "section"  # section / requirement / api / rule / reference（文件引用） / table（表格类型）
     semantic_blocks: list["PrdSemanticBlock"] = field(default_factory=list)
     children: list["MdNode"] = field(default_factory=list)  # 语义

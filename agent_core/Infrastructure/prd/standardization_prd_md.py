@@ -10,10 +10,9 @@ from markdown_it.token import Token
 from agent_core.common.content_utils import remove_redundant_newlines
 from agent_core.common.file_utils import read_md_file
 from agent_core.common.tree_utils import walk_md_tree
-from agent_core.llm.base import call_mllm_with_image
 from agent_core.models.prd.md_image_ref import MdImageRef
 from agent_core.models.prd.md_node import MdNode
-from agent_core.prompts.prd.parser_md_prompt import PARSER_MD_IMG_TO_NORMAL_TEXT_PROMPT
+from agent_core.models.prd.page_ref import PageRef
 
 
 # 旧解析流程和新 AST 解析流程共用同一套 Markdown 图片语法。
@@ -30,6 +29,14 @@ REFERENCE_FILE_PATTERN = re.compile(
     r"^(?:file://\S+|(?:[A-Za-z]:[\\/]|/|\./|\.\./)?\S+"
     r"\.(?:pdf|docx?|xlsx?|csv|pptx?|zip|rar))$",
     flags=re.IGNORECASE,
+)
+SYSTEM_INFO_PATTERN = re.compile(
+    r"!系统信息\s*[:：]\s*(?P<name>[^;；\r\n]+?)\s*[;；]"
+)
+PAGE_INFO_PATTERN = re.compile(
+    r"!页面信息\s*[:：]\s*(?P<name>[^;；\r\n]+?)\s*"
+    r"(?:[;；]|(?=\r?$))",
+    flags=re.MULTILINE,
 )
 
 @dataclass
@@ -145,6 +152,88 @@ def _prd_content_standardization(root: MdNode) -> None:
     walk_md_tree(root, handler)
 
 
+def _strip_page_markers(text: str) -> tuple[str, list[str], list[str]]:
+    """
+    提取并删除页面标记。
+
+    同时兼容半角/全角冒号和分号。页面信息允许位于行尾而不写分号，
+    但系统信息仍以分号作为边界，避免误吞后续页面标记。
+    """
+    system_names = [
+        match.group("name").strip()
+        for match in SYSTEM_INFO_PATTERN.finditer(text)
+        if match.group("name").strip()
+    ]
+    page_names = [
+        match.group("name").strip()
+        for match in PAGE_INFO_PATTERN.finditer(text)
+        if match.group("name").strip()
+    ]
+    cleaned = SYSTEM_INFO_PATTERN.sub("", text)
+    cleaned = PAGE_INFO_PATTERN.sub("", cleaned)
+    cleaned = re.sub(r"[ \t]+", " ", cleaned)
+    cleaned = re.sub(r" *\n *", "\n", cleaned).strip()
+    return cleaned, system_names, page_names
+
+
+def _extract_and_propagate_page_refs(root: MdNode) -> None:
+    """
+    将 Markdown 页面标记转换为 PageRef，并向后代继承最近页面上下文。
+
+    显式声明页面的节点覆盖继承上下文；未声明页面的后代获得父节点最近
+    的页面信息。页面标记属于元数据，因此不会继续留在 title/content 中。
+    """
+    def visit(node: MdNode, inherited_refs: list[PageRef]) -> None:
+        node.title, title_systems, title_pages = _strip_page_markers(
+            node.title
+        )
+        node.content, content_systems, content_pages = _strip_page_markers(
+            node.content
+        )
+        system_names = list(dict.fromkeys([
+            *title_systems,
+            *content_systems,
+        ]))
+        page_names = list(dict.fromkeys([
+            *title_pages,
+            *content_pages,
+        ]))
+
+        explicit_refs: list[PageRef] = []
+        if system_names and page_names:
+            system_name = system_names[-1]
+            explicit_refs = [
+                PageRef(
+                    page_id=f"{system_name}:{page_name}",
+                    system_name=system_name,
+                    page_name=page_name,
+                    relation_type="primary",
+                    confidence=1.0,
+                    matched_by=["系统信息", "页面信息"],
+                )
+                for page_name in page_names
+            ]
+
+        active_refs = explicit_refs or [
+            page_ref.model_copy(
+                update={
+                    "matched_by": list(dict.fromkeys([
+                        *page_ref.matched_by,
+                        "父节点继承",
+                    ])),
+                },
+                deep=True,
+            )
+            for page_ref in inherited_refs
+        ]
+        node.page_refs = active_refs
+
+        for child in node.children:
+            visit(child, active_refs)
+
+    visit(root, [])
+
+
 def standardization_prd_md(input_path: str) -> MdNode:
     """
     标准化prd
@@ -152,6 +241,7 @@ def standardization_prd_md(input_path: str) -> MdNode:
     node = _parser_md_prd_to_tree(input_path)
     _prd_img_processor(node)
     _prd_content_standardization(node)
+    _extract_and_propagate_page_refs(node)
     _fill_source_context(node)
 
     return node
@@ -597,6 +687,10 @@ def _split_oversized_node_content(
                     title=f"{node.title}-内容分段{index}",
                     level=node.level + 1,
                     content=chunk,
+                    page_refs=[
+                        page_ref.model_copy(deep=True)
+                        for page_ref in node.page_refs
+                    ],
                 )
                 for index, chunk in enumerate(chunks, start=1)
             ]
@@ -734,6 +828,7 @@ def _parser_md_prd_to_business_tree(
         index += 1
 
     _prd_content_standardization(root)
+    _extract_and_propagate_page_refs(root)
     _split_oversized_node_content(
         root,
         node_counter,

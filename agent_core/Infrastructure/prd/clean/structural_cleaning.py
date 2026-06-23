@@ -16,5 +16,6 @@ def _clean_recursive(node: MdNode):
             and len(c.content) == 0
             and len(c.references) == 0
             and len(c.images) == 0
+            and len(c.page_refs) == 0
         )
     ]

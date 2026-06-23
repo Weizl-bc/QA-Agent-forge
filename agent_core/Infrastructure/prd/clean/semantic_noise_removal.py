@@ -16,8 +16,14 @@ from agent_core.common.llm_result_validate_util import (
 )
 from agent_core.llm.base import create_model
 from agent_core.models.prd.md_node import MdNode
+from agent_core.models.prd.prd_normalization_result import (
+    PrdNormalizationResult,
+)
 from agent_core.models.prd.prd_semantic_block import PrdSemanticBlock
-from agent_core.prompts.prd.parser_md_prompt import PARSER_MD_TO_NORMAL_TEXT_PROMPT
+from agent_core.prompts.prd.parser_md_prompt import (
+    PARSER_MD_TO_NORMAL_TEXT_PROMPT,
+    PARSER_MD_TO_NORMAL_TEXT_REPAIR_PROMPT,
+)
 from agent_core.prompts.prd.senmatic_prompt import (
     MD_NODE_TO_SEMANTIC_PROMPT,
     NORMALIZED_CONTENT_SEMANTIC_REPAIR_PROMPT,
@@ -218,12 +224,13 @@ def _llm_extract_semantic_with_raw_content(
 
     raise RuntimeError("语义提取重试流程异常结束")
 
+
 def _normalization_tree_content_llm(
     content: str,
     node_title: str = "",
-) -> str:
+) -> PrdNormalizationResult:
     """
-    将mdNode中的content的不规范的文本统一为文本形式
+    标准化节点正文，并判断其是否包含可检索的业务信息。
     """
     llm = create_model(temperature=0)
     prompt = ChatPromptTemplate.from_messages([
@@ -232,15 +239,47 @@ def _normalization_tree_content_llm(
             "human",
             "【节点标题】{node_title}\n"
             "【节点正文】\n{content}\n\n"
-            "请结合节点标题，将正文标准化为纯文本，不要输出列表或JSON。",
+            "请输出标准化结果 JSON。",
         ),
     ])
-    chain = prompt | llm
-    result = chain.invoke({
+    result = (prompt | llm).invoke({
         "content": content,
         "node_title": node_title,
     })
-    return extract_llm_content(result)
+
+    for attempt in range(1, MAX_SEMANTIC_PARSE_ATTEMPTS + 1):
+        try:
+            return PrdNormalizationResult.model_validate_json(
+                clean_llm_json_content(result)
+            )
+        except (ValidationError, ValueError) as exc:
+            response_content = extract_llm_content(result)
+            logger.warning(
+                "normalization_parse_failed",
+                attempt=attempt,
+                max_attempts=MAX_SEMANTIC_PARSE_ATTEMPTS,
+                error_type=type(exc).__name__,
+                error=str(exc),
+                response_length=len(response_content),
+            )
+            if attempt >= MAX_SEMANTIC_PARSE_ATTEMPTS:
+                raise ValueError(
+                    "LLM 标准化结果经过 "
+                    f"{MAX_SEMANTIC_PARSE_ATTEMPTS} 次尝试仍无法解析"
+                ) from exc
+
+            repair_prompt = ChatPromptTemplate.from_messages([
+                ("system", PARSER_MD_TO_NORMAL_TEXT_PROMPT),
+                ("human", PARSER_MD_TO_NORMAL_TEXT_REPAIR_PROMPT),
+            ])
+            result = (repair_prompt | llm).invoke({
+                "error": str(exc),
+                "invalid_output": response_content,
+                "content": content,
+                "node_title": node_title,
+            })
+
+    raise RuntimeError("正文标准化重试流程异常结束")
 
 
 def _extract_short_enum_values(content: str) -> list[str]:
@@ -361,6 +400,8 @@ def _normalize_and_extract_node(node: MdNode) -> None:
         )
         node.content = ""
         node.normalized_content = ""
+        node.is_retrievable = False
+        node.retrieval_reason = "正文仅包含 URL 引用"
         node.semantic_blocks = []
         node_logger.info(
             "semantic_node_normalization_skipped",
@@ -370,10 +411,13 @@ def _normalize_and_extract_node(node: MdNode) -> None:
         return
 
     try:
-        node.normalized_content = _normalization_tree_content_llm(
+        normalization_result = _normalization_tree_content_llm(
             node.content,
             node_title=node.title,
         )
+        node.normalized_content = normalization_result.normalized_content
+        node.is_retrievable = normalization_result.is_retrievable
+        node.retrieval_reason = normalization_result.retrieval_reason
     except Exception as exc:
         node_logger.exception(
             "semantic_node_normalization_failed",
@@ -393,7 +437,17 @@ def _normalize_and_extract_node(node: MdNode) -> None:
             2,
         ),
         normalized_content_length=len(node.normalized_content),
+        is_retrievable=node.is_retrievable,
+        retrieval_reason=node.retrieval_reason,
     )
+
+    if not node.is_retrievable:
+        node.semantic_blocks = []
+        node_logger.info(
+            "semantic_node_extraction_skipped",
+            reason="node_not_retrievable",
+        )
+        return
 
     extraction_started_at = perf_counter()
     node_logger.info("semantic_node_extraction_started")

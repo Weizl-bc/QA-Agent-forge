@@ -16,6 +16,7 @@ class BaseVectorStore(ABC):
         dimension: int,
         *,
         primary_field_name: str = "id",
+        id_type: str = "int",
         vector_field_name: str = "vector",
         metric_type: str = "COSINE",
         auto_id: bool = False,
