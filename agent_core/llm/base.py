@@ -1,20 +1,28 @@
 import structlog
 from langchain.chat_models import init_chat_model
+from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
+from langchain_openai import OpenAIEmbeddings
 
 from agent_core.common.env_config import get_env, get_required_env
 from agent_core.prompts.prd.parser_md_prompt import PARSER_MD_IMG_TO_NORMAL_TEXT_PROMPT
 
 logger = structlog.get_logger(__name__)
 
+
 def create_model(
     temperature: float = 0.1,
     max_retries: int | None = None,
+    request_timeout: float | None = None,
 ) -> BaseChatModel:
     model_name = get_required_env("LLM_CHAT_MODEL_NAME")
     base_url = get_required_env("LLM_BASE_URL")
     api_key = get_required_env("LLM_API_KEY")
-    request_timeout = float(get_env("LLM_REQUEST_TIMEOUT", "180"))
+    resolved_request_timeout = (
+        float(get_env("LLM_REQUEST_TIMEOUT", "180"))
+        if request_timeout is None
+        else request_timeout
+    )
     resolved_max_retries = (
         int(get_env("LLM_MAX_RETRIES", "2"))
         if max_retries is None
@@ -36,7 +44,7 @@ def create_model(
         base_url=base_url,
         temperature=temperature,
         api_key=api_key,
-        timeout=request_timeout,
+        timeout=resolved_request_timeout,
         max_retries=resolved_max_retries,
     )
 
@@ -79,6 +87,46 @@ def call_mllm_with_image(img_url: str, prompt: str, temperature: float = 0.1) ->
     }
     result = model.invoke([message])
     return result.content
+
+
+def create_embedding_model(
+    dimensions: int | None = None,
+    max_retries: int | None = None,
+) -> Embeddings:
+    """创建兼容 Qwen/DashScope OpenAI Embedding 接口的模型实例。"""
+    model_name = get_required_env("LLM_TEXT_EMBEDDING_MODEL_NAME")
+    base_url = get_required_env("LLM_TEXT_EMBEDDING_BASE_URL")
+    api_key = get_required_env("LLM_TEXT_EMBEDDING_API_KEY")
+    request_timeout = float(
+        get_env("LLM_TEXT_EMBEDDING_REQUEST_TIMEOUT", "180")
+    )
+    resolved_max_retries = (
+        int(get_env("LLM_TEXT_EMBEDDING_MAX_RETRIES", "2"))
+        if max_retries is None
+        else max_retries
+    )
+    configured_dimensions = get_env("LLM_TEXT_EMBEDDING_DIMENSIONS")
+    resolved_dimensions = (
+        dimensions
+        if dimensions is not None
+        else (
+            int(configured_dimensions)
+            if configured_dimensions is not None
+            else None
+        )
+    )
+
+    return OpenAIEmbeddings(
+        model=model_name,
+        base_url=base_url,
+        api_key=api_key,
+        dimensions=resolved_dimensions,
+        chunk_size=10,
+        timeout=request_timeout,
+        max_retries=resolved_max_retries,
+        tiktoken_enabled=False,
+        check_embedding_ctx_length=False,
+    )
 
 
 if __name__ == "__main__":

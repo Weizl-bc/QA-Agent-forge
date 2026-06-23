@@ -1,9 +1,10 @@
-from dataclasses import field, Field
+from dataclasses import field
 from typing import Callable
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from agent_core.models.prd.md_image_ref import MdImageRef
+from agent_core.models.prd.page_ref import PageRef
 from agent_core.models.prd.prd_semantic_block import PrdSemanticBlock
 
 
@@ -22,11 +23,12 @@ class MdNode(BaseModel):
     content: str = ""
     source_path: str = ""
     normalized_content: str = ""    # LLM归一化结果
-    node_type: str = "section"  # section / requirement / api / rule / reference
+    node_type: str = "section"  # section / requirement / api / rule / reference（文件引用） / table（表格类型）
     semantic_blocks: list["PrdSemanticBlock"] = field(default_factory=list)
     children: list["MdNode"] = field(default_factory=list)  # 语义
     images: list[MdImageRef] = field(default_factory=list)
     references: list[str] = field(default_factory=list)
+    page_refs: list[PageRef] = Field(default_factory=list)
 
     def remove_this_node(self, predicate: Callable[["MdNode"], bool]) -> int:
         """

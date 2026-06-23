@@ -87,6 +87,8 @@ chromadb/
 
 vector_store/
 vectorstores/
+!agent_core/rag/vectorstores/
+!agent_core/rag/vectorstores/*.py
 
 faiss_index/
 *.faiss

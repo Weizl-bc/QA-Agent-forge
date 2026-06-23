@@ -51,52 +51,52 @@ PARSER_MD_IMG_TO_NORMAL_TEXT_PROMPT = """
 8. 输出严格 JSON，不要输出 markdown，不要输出解释性文字。
 
 输出 JSON 格式如下：
-{
+{{
   "image_type": "flow_chart | swimlane | state_machine | ui_prototype | table_screenshot | field_screenshot | error_screenshot | architecture | decoration | unknown",
   "is_business_relevant": true,
   "ocr_texts": [
-    {
+    {{
       "text": "",
       "confidence": "high | medium | low"
-    }
+    }}
   ],
   "participants": [
-    {
+    {{
       "name": "",
       "type": "user | role | system | external_system | unknown"
-    }
+    }}
   ],
   "nodes": [
-    {
+    {{
       "node_id": "n1",
       "name": "",
       "node_type": "start | action | decision | state | end | data | page | unknown",
       "owner": "",
       "description": ""
-    }
+    }}
   ],
   "edges": [
-    {
+    {{
       "from": "n1",
       "to": "n2",
       "condition": "",
       "action": "",
       "direction_confidence": "high | medium | low"
-    }
+    }}
   ],
   "branches": [
-    {
+    {{
       "condition": "",
       "true_path": "",
       "false_path": "",
       "description": ""
-    }
+    }}
   ],
   "business_summary": "",
   "uncertain_items": [
     ""
   ]
-}
+}}
 
 注意：
 1. business_summary不要使用md格式返回，要求以普通文本返回，方便后续llm解析
@@ -125,9 +125,9 @@ PARSER_IMG_TO_SEMANTIC_BLOCK_PROMPT = """
 {image_analysis_json}
 
 请输出：
-{
+{{
   "semantic_blocks": [
-    {
+    {{
       "raw_text": "",
       "block_type": "flow_rule | state_rule | ui_requirement | data_rule | exception_rule | permission_rule | api_rule | unknown",
       "source_type": "image",
@@ -139,17 +139,17 @@ PARSER_IMG_TO_SEMANTIC_BLOCK_PROMPT = """
       "is_noise": false,
       "source_node_path": "{source_node_path}",
       "source_title": "{source_title}"
-    }
+    }}
   ],
   "test_points": [
-    {
+    {{
       "title": "",
       "preconditions": [],
       "steps": [],
       "expected_result": "",
       "priority": "P0 | P1 | P2 | P3"
-    }
+    }}
   ],
   "uncertain_items": []
-}
+}}
 """

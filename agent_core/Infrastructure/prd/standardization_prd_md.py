@@ -44,6 +44,7 @@ class MarkdownListItem:
     text: str = ""
     children: list["MarkdownListItem"] = field(default_factory=list)
     images: list[MdImageRef] = field(default_factory=list)
+    tables: list[str] = field(default_factory=list)
 
 
 def _extract_md_title(md_title: str) -> tuple[str, int]:
@@ -254,6 +255,7 @@ def _parse_markdown_list(
     tokens: list[Token],
     start_index: int,
     image_counter: Iterator[int],
+    markdown_lines: list[str],
 ) -> tuple[list[MarkdownListItem], int]:
     """
     递归解析 bullet_list/ordered_list token。
@@ -271,6 +273,7 @@ def _parse_markdown_list(
                 tokens,
                 index,
                 image_counter,
+                markdown_lines,
             )
             items.append(item)
         else:
@@ -283,6 +286,7 @@ def _parse_markdown_list_item(
     tokens: list[Token],
     start_index: int,
     image_counter: Iterator[int],
+    markdown_lines: list[str],
 ) -> tuple[MarkdownListItem, int]:
     """
     解析单个 list_item。
@@ -292,6 +296,7 @@ def _parse_markdown_list_item(
     """
     text_parts: list[str] = []
     images: list[MdImageRef] = []
+    tables: list[str] = []
     child_items: list[MarkdownListItem] = []
     index = start_index + 1
 
@@ -314,8 +319,14 @@ def _parse_markdown_list_item(
                 tokens,
                 index,
                 image_counter,
+                markdown_lines,
             )
             child_items.extend(children)
+            continue
+
+        if token.type == "table_open":
+            tables.append(_extract_table_markdown(token, markdown_lines))
+            index = _skip_token_block(tokens, index, "table_close")
             continue
 
         if token.type in {"fence", "code_block"} and token.content.strip():
@@ -328,9 +339,54 @@ def _parse_markdown_list_item(
             text="\n".join(text_parts).strip(),
             children=child_items,
             images=images,
+            tables=tables,
         ),
         index + 1,
     )
+
+
+def _extract_table_markdown(
+    table_open_token: Token,
+    markdown_lines: list[str],
+) -> str:
+    """根据 table token 的源码行范围无损提取 Markdown 表格。"""
+    if table_open_token.map is None:
+        return ""
+    start_line, end_line = table_open_token.map
+    return "\n".join(markdown_lines[start_line:end_line]).strip()
+
+
+def _skip_token_block(
+    tokens: list[Token],
+    start_index: int,
+    close_type: str,
+) -> int:
+    """跳过从 open token 到匹配 close token 的完整 token 块。"""
+    index = start_index + 1
+    while index < len(tokens) and tokens[index].type != close_type:
+        index += 1
+    return min(index + 1, len(tokens))
+
+
+def _append_table_nodes(
+    parent: MdNode,
+    table_markdowns: list[str],
+    node_counter: Iterator[int],
+    table_counter: Iterator[int],
+) -> None:
+    """将 Markdown 表格作为独立子节点挂到当前业务节点。"""
+    for table_markdown in table_markdowns:
+        if not table_markdown:
+            continue
+        parent.children.append(
+            MdNode(
+                id=f"node-{next(node_counter)}",
+                title=f"表格{next(table_counter)}",
+                level=parent.level + 1,
+                content=table_markdown,
+                node_type="table",
+            )
+        )
 
 
 def _extract_list_item_title_and_content(text: str) -> tuple[str, str]:
@@ -395,6 +451,7 @@ def _convert_list_items_to_md_nodes(
     items: list[MarkdownListItem],
     parent: MdNode,
     node_counter: Iterator[int],
+    table_counter: Iterator[int],
 ) -> None:
     """
     将中间列表树转换为 MdNode 子树。
@@ -421,10 +478,17 @@ def _convert_list_items_to_md_nodes(
                 references=references,
             )
             parent.children.append(business_node)
+            _append_table_nodes(
+                business_node,
+                item.tables,
+                node_counter,
+                table_counter,
+            )
             _convert_list_items_to_md_nodes(
                 item.children,
                 business_node,
                 node_counter,
+                table_counter,
             )
             continue
 
@@ -437,10 +501,17 @@ def _convert_list_items_to_md_nodes(
             if reference not in parent.references
         )
         parent.images.extend(item.images)
+        _append_table_nodes(
+            parent,
+            item.tables,
+            node_counter,
+            table_counter,
+        )
         _convert_list_items_to_md_nodes(
             item.children,
             parent,
             node_counter,
+            table_counter,
         )
 
 
@@ -518,7 +589,7 @@ def _split_oversized_node_content(
         node = stack.pop()
         original_children = list(node.children)
 
-        if len(node.content) > max_chars:
+        if node.node_type != "table" and len(node.content) > max_chars:
             chunks = _split_oversized_text(node.content, max_chars)
             segment_nodes = [
                 MdNode(
@@ -576,10 +647,12 @@ def _parser_md_prd_to_business_tree(
         raise ValueError("max_node_content_chars 必须大于等于 1")
 
     markdown_text = Path(input_path).read_text(encoding="utf-8")
-    tokens = MarkdownIt("commonmark").parse(markdown_text)
+    markdown_lines = markdown_text.splitlines()
+    tokens = MarkdownIt("commonmark").enable("table").parse(markdown_text)
     root = MdNode(id="root", title="ROOT", level=0)
     node_counter = count(1)
     image_counter = count(1)
+    table_counter = count(1)
     heading_stack: list[MdNode] = [root]
     current_node = root
     index = 0
@@ -618,12 +691,24 @@ def _parser_md_prd_to_business_tree(
                 tokens,
                 index,
                 image_counter,
+                markdown_lines,
             )
             _convert_list_items_to_md_nodes(
                 items,
                 current_node,
                 node_counter,
+                table_counter,
             )
+            continue
+
+        if token.type == "table_open":
+            _append_table_nodes(
+                current_node,
+                [_extract_table_markdown(token, markdown_lines)],
+                node_counter,
+                table_counter,
+            )
+            index = _skip_token_block(tokens, index, "table_close")
             continue
 
         if token.type == "inline":

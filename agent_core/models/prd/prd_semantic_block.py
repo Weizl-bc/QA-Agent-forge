@@ -31,4 +31,5 @@ class PrdSemanticBlock(BaseModel):
     is_noise: bool = False  # 是否噪声
     source_node_path: Optional[str] = None  # 来源
     source_title: Optional[str] = None
+    source_image_id: Optional[str] = None
     embedding: Optional[list[float]] = None  # embedding（后置生成）

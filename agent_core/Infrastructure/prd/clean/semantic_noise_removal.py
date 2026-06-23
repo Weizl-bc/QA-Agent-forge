@@ -398,9 +398,13 @@ def _normalize_and_extract_node(node: MdNode) -> None:
     extraction_started_at = perf_counter()
     node_logger.info("semantic_node_extraction_started")
     try:
-        semantic_blocks = _llm_extract_semantic(
+        # semantic_blocks = _llm_extract_semantic(
+        #     normalized_content=node.normalized_content,
+        #     node_title=node.title,
+        # )
+        semantic_blocks = _llm_extract_semantic_with_raw_content(
+            raw_content=node.content,
             normalized_content=node.normalized_content,
-            node_title=node.title,
         )
         enum_fallback = _build_enum_fallback_block(node)
         if (
@@ -415,6 +419,15 @@ def _normalize_and_extract_node(node: MdNode) -> None:
                 "semantic_enum_fallback_applied",
                 enum_value_count=len(enum_fallback.entities) - 1,
             )
+        source_type = (
+            "table"
+            if node.node_type == "table"
+            else "content"
+        )
+        for block in semantic_blocks:
+            block.source_type = source_type
+            block.source_node_path = node.source_path or None
+            block.source_title = node.title
         node.semantic_blocks = semantic_blocks
     except Exception as exc:
         node_logger.exception(
