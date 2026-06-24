@@ -1,8 +1,10 @@
 import json
 import re
+from datetime import datetime
 from pathlib import Path
-from uuid import uuid4
+from zoneinfo import ZoneInfo
 
+from agent_core.common.env_config import get_env
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 LOG_DIR = PROJECT_ROOT / "log"
@@ -15,7 +17,7 @@ def write_json_string_to_log(
     """
     将 JSON 字符串格式化后写入项目根目录的 ``log`` 文件夹。
 
-    文件名格式：``{prefix}_{uuid}.json``。
+    文件名格式：``{prefix}_yyyy-mm-dd hh:mm:ss.json``。
 
     :param json_content: 合法的 JSON 格式字符串。
     :param prefix: 文件名前缀。
@@ -36,7 +38,11 @@ def write_json_string_to_log(
         raise ValueError(f"JSON 字符串格式不合法: {exc}") from exc
 
     LOG_DIR.mkdir(parents=True, exist_ok=True)
-    output_path = LOG_DIR / f"{safe_prefix}_{uuid4().hex}.json"
+    timezone_name = get_env("LOG_TIMEZONE", "Asia/Shanghai")
+    timestamp = datetime.now(
+        ZoneInfo(timezone_name or "Asia/Shanghai")
+    ).strftime("%Y-%m-%d %H:%M:%S")
+    output_path = LOG_DIR / f"{safe_prefix}_{timestamp}.json"
     output_path.write_text(
         json.dumps(
             parsed_content,
