@@ -180,6 +180,7 @@ class PrdCleaningPipeline:
                 "enrichment",
                 root,
             )
+
         except Exception as exc:
             pipeline_logger.exception(
                 "prd_cleaning_pipeline_failed",
@@ -202,8 +203,3 @@ class PrdCleaningPipeline:
             **_collect_tree_metrics(root),
         )
         return context
-
-
-PrdCleaningPipeline().run(
-    input_path="../test/test_prd.md"
-)

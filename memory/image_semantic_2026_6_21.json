@@ -1,0 +1,2144 @@
+{
+  "id": "root",
+  "title": "ROOT",
+  "level": 0,
+  "content": "",
+  "source_path": "",
+  "normalized_content": "",
+  "node_type": "section",
+  "semantic_blocks": [],
+  "children": [
+    {
+      "id": "node-1",
+      "title": "菜鸟速递-电脑下单",
+      "level": 1,
+      "content": "",
+      "source_path": "菜鸟速递-电脑下单",
+      "normalized_content": "",
+      "node_type": "section",
+      "semantic_blocks": [],
+      "children": [
+        {
+          "id": "node-2",
+          "title": "变更记录",
+          "level": 3,
+          "content": "| 日期 | 修订人 | 修订内容 |\n| --- | --- | --- |\n| 2025-10-17 | 檀金玉 | 创建文档 |\n|  |  |  |",
+          "source_path": "菜鸟速递-电脑下单 / 变更记录",
+          "normalized_content": "变更记录\n变更记录功能，字段包括日期，修订人，修订内容，记录显示2025-10-17由檀金玉创建文档。",
+          "node_type": "section",
+          "semantic_blocks": [
+            {
+              "raw_text": "变更记录",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [],
+              "constraints": [],
+              "entities": [
+                "变更记录"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "变更记录",
+              "embedding": null
+            },
+            {
+              "raw_text": "变更记录功能，字段包括日期，修订人，修订内容，记录显示2025-10-17由檀金玉创建文档。",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "创建文档"
+              ],
+              "constraints": [],
+              "entities": [
+                "日期",
+                "修订人",
+                "修订内容",
+                "文档",
+                "檀金玉"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "变更记录",
+              "embedding": null
+            }
+          ],
+          "children": [],
+          "images": [],
+          "references": []
+        }
+      ],
+      "images": [],
+      "references": []
+    },
+    {
+      "id": "node-3",
+      "title": "一、背景",
+      "level": 1,
+      "content": "",
+      "source_path": "一、背景",
+      "normalized_content": "",
+      "node_type": "section",
+      "semantic_blocks": [],
+      "children": [
+        {
+          "id": "node-6",
+          "title": "3.链路",
+          "level": 2,
+          "content": "@startuml\nparticipant 菜鸟速递PC下单站点 as pczd\nparticipant tdbrp as tdbrp\nparticipant consign.web as consign.web\nparticipant tdtradeplatform as tdtradeplatform\nparticipant consign.core as consign.core\nparticipant 小程序 as xcx\npczd -> pczd: 菜鸟B账号登录\npczd -> tdbrp: 查询账号绑定关系\npczd -> xcx: 未绑定无法使用pc下单，手机扫码绑定\nxcx -> tdbrp: 绑定账号\npczd -> consign.web: 查询待发货订单\npczd -> consign.web: 批量导入待发货订单\npczd -> consign.web: 勾选订单批量发货\npczd -> tdtradeplatform: 查询待打印订单\npczd -> consign.core: 查询打印机设置\npczd -> consign.core: 保存打印机设置\npczd -> consign.core: 获取打印数据\npczd -> pczd: 打印\npczd -> consign.core: 更新打印状态\npczd -> consign.core: 查询免密支付签署协议\npczd -> pczd: 未签约免密，点击链接跳转，支付宝扫码签约\npczd -> payment.platform: 获取支付链接，发起支付\npczd -> pczd: 跳转页面，扫码支付||免密代扣\npczd -> consign.web: 导出订单\n@enduml",
+          "source_path": "一、背景 / 3.链路",
+          "normalized_content": "链路\n菜鸟速递PC下单站点 → 菜鸟速递PC下单站点：菜鸟B账号登录\n菜鸟速递PC下单站点 → tdbrp：查询账号绑定关系\n菜鸟速递PC下单站点 → 小程序：未绑定时引导扫码绑定\n小程序 → tdbrp：绑定账号\n菜鸟速递PC下单站点 → consign.web：查询待发货订单，批量导入待发货订单，勾选订单批量发货，导出订单\n菜鸟速递PC下单站点 → tdtradeplatform：查询待打印订单\n菜鸟速递PC下单站点 → consign.core：查询打印机设置，保存打印机设置，获取打印数据，更新打印状态，查询免密支付签署协议\n菜鸟速递PC下单站点 → 菜鸟速递PC下单站点：打印，未签约免密时点击链接跳转支付宝扫码签约，跳转页面扫码支付或免密代扣\n菜鸟速递PC下单站点 → payment.platform：获取支付链接，发起支付",
+          "node_type": "section",
+          "semantic_blocks": [
+            {
+              "raw_text": "菜鸟速递PC下单站点 → 菜鸟速递PC下单站点：菜鸟B账号登录",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "菜鸟B账号登录"
+              ],
+              "constraints": [],
+              "entities": [
+                "菜鸟速递PC下单站点"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "3.链路",
+              "embedding": null
+            },
+            {
+              "raw_text": "菜鸟速递PC下单站点 → tdbrp：查询账号绑定关系",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "查询账号绑定关系"
+              ],
+              "constraints": [],
+              "entities": [
+                "菜鸟速递PC下单站点",
+                "tdbrp"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "3.链路",
+              "embedding": null
+            },
+            {
+              "raw_text": "菜鸟速递PC下单站点 → 小程序：未绑定时引导扫码绑定",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [
+                "未绑定时"
+              ],
+              "actions": [
+                "引导扫码绑定"
+              ],
+              "constraints": [],
+              "entities": [
+                "菜鸟速递PC下单站点",
+                "小程序"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "3.链路",
+              "embedding": null
+            },
+            {
+              "raw_text": "小程序 → tdbrp：绑定账号",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "绑定账号"
+              ],
+              "constraints": [],
+              "entities": [
+                "小程序",
+                "tdbrp"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "3.链路",
+              "embedding": null
+            },
+            {
+              "raw_text": "菜鸟速递PC下单站点 → consign.web：查询待发货订单，批量导入待发货订单，勾选订单批量发货，导出订单",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "查询待发货订单",
+                "批量导入待发货订单",
+                "勾选订单批量发货",
+                "导出订单"
+              ],
+              "constraints": [],
+              "entities": [
+                "菜鸟速递PC下单站点",
+                "consign.web"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "3.链路",
+              "embedding": null
+            },
+            {
+              "raw_text": "菜鸟速递PC下单站点 → tdtradeplatform：查询待打印订单",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "查询待打印订单"
+              ],
+              "constraints": [],
+              "entities": [
+                "菜鸟速递PC下单站点",
+                "tdtradeplatform"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "3.链路",
+              "embedding": null
+            },
+            {
+              "raw_text": "菜鸟速递PC下单站点 → consign.core：查询打印机设置，保存打印机设置，获取打印数据，更新打印状态，查询免密支付签署协议",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "查询打印机设置",
+                "保存打印机设置",
+                "获取打印数据",
+                "更新打印状态",
+                "查询免密支付签署协议"
+              ],
+              "constraints": [],
+              "entities": [
+                "菜鸟速递PC下单站点",
+                "consign.core"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "3.链路",
+              "embedding": null
+            },
+            {
+              "raw_text": "菜鸟速递PC下单站点 → 菜鸟速递PC下单站点：打印，未签约免密时点击链接跳转支付宝扫码签约，跳转页面扫码支付或免密代扣",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [
+                "未签约免密时"
+              ],
+              "actions": [
+                "打印",
+                "点击链接跳转支付宝扫码签约",
+                "跳转页面扫码支付或免密代扣"
+              ],
+              "constraints": [],
+              "entities": [
+                "菜鸟速递PC下单站点"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "3.链路",
+              "embedding": null
+            },
+            {
+              "raw_text": "菜鸟速递PC下单站点 → payment.platform：获取支付链接，发起支付",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "获取支付链接",
+                "发起支付"
+              ],
+              "constraints": [],
+              "entities": [
+                "菜鸟速递PC下单站点",
+                "payment.platform"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "3.链路",
+              "embedding": null
+            }
+          ],
+          "children": [],
+          "images": [
+            {
+              "id": "img-1",
+              "raw_markdown": "![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/a/6KYkegJwXTGAPzEb/38d948d4f0c64ca092378470dc76eafa3905.png)",
+              "alt_text": "image",
+              "src": "https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/a/6KYkegJwXTGAPzEb/38d948d4f0c64ca092378470dc76eafa3905.png",
+              "title": null,
+              "local_path": null,
+              "image_type": "unknown",
+              "ocr_text": "",
+              "visual_summary": "",
+              "is_noise": false,
+              "source_node_id": "node-6",
+              "source_node_path": "一、背景 / 3.链路",
+              "source_title": "3.链路"
+            }
+          ],
+          "references": []
+        }
+      ],
+      "images": [],
+      "references": []
+    },
+    {
+      "id": "node-7",
+      "title": "二、需求",
+      "level": 1,
+      "content": "",
+      "source_path": "二、需求",
+      "normalized_content": "",
+      "node_type": "section",
+      "semantic_blocks": [],
+      "children": [
+        {
+          "id": "node-8",
+          "title": "需求描述",
+          "level": 2,
+          "content": "| 系统 | 需求 | 负责产品 | 优先级 | 技术负责人 |\n| --- | --- | --- | --- | --- |\n| 小程序 | 扫码绑定账号 |  |  |  |\n| PC端 | 电脑下单 |  |  |  |",
+          "source_path": "二、需求 / 需求描述",
+          "normalized_content": "需求描述\n小程序，扫码绑定账号\nPC端，电脑下单",
+          "node_type": "section",
+          "semantic_blocks": [
+            {
+              "raw_text": "小程序，扫码绑定账号",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [
+                "小程序"
+              ],
+              "actions": [
+                "扫码绑定账号"
+              ],
+              "constraints": [],
+              "entities": [
+                "小程序",
+                "账号"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "需求描述",
+              "embedding": null
+            },
+            {
+              "raw_text": "PC端，电脑下单",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [
+                "PC端"
+              ],
+              "actions": [
+                "电脑下单"
+              ],
+              "constraints": [],
+              "entities": [
+                "PC端"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": "需求描述",
+              "embedding": null
+            }
+          ],
+          "children": [],
+          "images": [],
+          "references": []
+        },
+        {
+          "id": "node-9",
+          "title": "需求明细",
+          "level": 2,
+          "content": "",
+          "source_path": "二、需求 / 需求明细",
+          "normalized_content": "",
+          "node_type": "section",
+          "semantic_blocks": [],
+          "children": [
+            {
+              "id": "node-10",
+              "title": "电脑下单新建独立的PC页面",
+              "level": 3,
+              "content": "",
+              "source_path": "二、需求 / 需求明细 / 电脑下单新建独立的PC页面",
+              "normalized_content": "",
+              "node_type": "section",
+              "semantic_blocks": [],
+              "children": [],
+              "images": [],
+              "references": [
+                "https://cn-x-gateway.cainiao.com/cone/cnsd-c/queryWaybill"
+              ]
+            },
+            {
+              "id": "node-11",
+              "title": "页面登录方式",
+              "level": 3,
+              "content": "",
+              "source_path": "二、需求 / 需求明细 / 页面登录方式",
+              "normalized_content": "",
+              "node_type": "section",
+              "semantic_blocks": [],
+              "children": [
+                {
+                  "id": "node-12",
+                  "title": "密码登录",
+                  "level": 4,
+                  "content": "只限账号名和手机号登录，不显示「邮箱」登录;",
+                  "source_path": "二、需求 / 需求明细 / 页面登录方式 / 密码登录",
+                  "normalized_content": "密码登录\n功能描述：只限账号名和手机号登录，不显示邮箱登录",
+                  "node_type": "section",
+                  "semantic_blocks": [
+                    {
+                      "raw_text": "密码登录",
+                      "block_type": "description",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [],
+                      "constraints": [],
+                      "entities": [
+                        "密码登录"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": "密码登录",
+                      "embedding": null
+                    },
+                    {
+                      "raw_text": "功能描述：只限账号名和手机号登录，不显示邮箱登录",
+                      "block_type": "constraint",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [],
+                      "constraints": [
+                        "只限账号名和手机号登录",
+                        "不显示邮箱登录"
+                      ],
+                      "entities": [
+                        "账号名",
+                        "手机号",
+                        "邮箱登录"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": "密码登录",
+                      "embedding": null
+                    }
+                  ],
+                  "children": [],
+                  "images": [],
+                  "references": []
+                },
+                {
+                  "id": "node-13",
+                  "title": "短信登录",
+                  "level": 4,
+                  "content": "用户可以通过手机号注册菜鸟会员进行使用：",
+                  "source_path": "二、需求 / 需求明细 / 页面登录方式 / 短信登录",
+                  "normalized_content": "短信登录\n模块：短信登录，子模块：，功能描述：用户可以通过手机号注册菜鸟会员进行使用",
+                  "node_type": "section",
+                  "semantic_blocks": [
+                    {
+                      "raw_text": "短信登录",
+                      "block_type": "description",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [],
+                      "constraints": [],
+                      "entities": [
+                        "短信登录"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": "短信登录",
+                      "embedding": null
+                    },
+                    {
+                      "raw_text": "模块：短信登录，子模块：，功能描述：用户可以通过手机号注册菜鸟会员进行使用",
+                      "block_type": "description",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [
+                        "用户可以通过手机号注册菜鸟会员进行使用"
+                      ],
+                      "constraints": [],
+                      "entities": [
+                        "用户",
+                        "手机号",
+                        "菜鸟会员"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": "短信登录",
+                      "embedding": null
+                    }
+                  ],
+                  "children": [],
+                  "images": [],
+                  "references": []
+                },
+                {
+                  "id": "node-14",
+                  "title": "菜鸟账号登录",
+                  "level": 4,
+                  "content": "菜鸟账号应该可以签约免密代扣；",
+                  "source_path": "二、需求 / 需求明细 / 页面登录方式 / 菜鸟账号登录",
+                  "normalized_content": "菜鸟账号登录，菜鸟账号应该可以签约免密代扣",
+                  "node_type": "section",
+                  "semantic_blocks": [
+                    {
+                      "raw_text": "菜鸟账号登录",
+                      "block_type": "description",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [
+                        "登录"
+                      ],
+                      "constraints": [],
+                      "entities": [
+                        "菜鸟账号"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": "菜鸟账号登录",
+                      "embedding": null
+                    },
+                    {
+                      "raw_text": "菜鸟账号应该可以签约免密代扣",
+                      "block_type": "rule",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [
+                        "签约免密代扣"
+                      ],
+                      "constraints": [],
+                      "entities": [
+                        "菜鸟账号"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": "菜鸟账号登录",
+                      "embedding": null
+                    }
+                  ],
+                  "children": [],
+                  "images": [],
+                  "references": []
+                },
+                {
+                  "id": "node-15",
+                  "title": "淘宝账号登录",
+                  "level": 4,
+                  "content": "淘宝账号应该可以签约免密代扣；",
+                  "source_path": "二、需求 / 需求明细 / 页面登录方式 / 淘宝账号登录",
+                  "normalized_content": "淘宝账号登录模块支持淘宝账号签约免密代扣功能。",
+                  "node_type": "section",
+                  "semantic_blocks": [
+                    {
+                      "raw_text": "淘宝账号登录模块支持淘宝账号签约免密代扣功能。",
+                      "block_type": "description",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [],
+                      "constraints": [],
+                      "entities": [
+                        "淘宝账号登录模块",
+                        "淘宝账号",
+                        "免密代扣功能"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": "淘宝账号登录",
+                      "embedding": null
+                    }
+                  ],
+                  "children": [],
+                  "images": [],
+                  "references": []
+                }
+              ],
+              "images": [],
+              "references": []
+            },
+            {
+              "id": "node-16",
+              "title": "使用账号",
+              "level": 3,
+              "content": "微信小程序使用菜鸟会员C端账号;\nPC端使用菜鸟会员B端账号下的个人主体账号;",
+              "source_path": "二、需求 / 需求明细 / 使用账号",
+              "normalized_content": "使用账号\n微信小程序，使用菜鸟会员C端账号；PC端，使用菜鸟会员B端账号下的个人主体账号",
+              "node_type": "section",
+              "semantic_blocks": [
+                {
+                  "raw_text": "微信小程序，使用菜鸟会员C端账号",
+                  "block_type": "rule",
+                  "source_type": "content",
+                  "conditions": [
+                    "微信小程序"
+                  ],
+                  "actions": [],
+                  "constraints": [],
+                  "entities": [
+                    "菜鸟会员C端账号",
+                    "微信小程序"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": "使用账号",
+                  "embedding": null
+                },
+                {
+                  "raw_text": "PC端，使用菜鸟会员B端账号下的个人主体账号",
+                  "block_type": "rule",
+                  "source_type": "content",
+                  "conditions": [
+                    "PC端"
+                  ],
+                  "actions": [],
+                  "constraints": [],
+                  "entities": [
+                    "菜鸟会员B端账号",
+                    "个人主体账号",
+                    "PC端"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": "使用账号",
+                  "embedding": null
+                }
+              ],
+              "children": [],
+              "images": [],
+              "references": []
+            },
+            {
+              "id": "node-17",
+              "title": "绑定逻辑",
+              "level": 3,
+              "content": "同一手机号才能进行绑定;\n校验绑定账号和被绑定账号的1-1绑定关系，不能重复绑定;\n数据关联查询：订单查询、所有订单操作、专业市场绑定关系，小件员绑定关系;",
+              "source_path": "二、需求 / 需求明细 / 绑定逻辑",
+              "normalized_content": "绑定逻辑，绑定条件：同一手机号才能进行绑定\n绑定逻辑，绑定校验：校验绑定账号和被绑定账号的1-1绑定关系，不能重复绑定\n绑定逻辑，数据关联查询：订单查询、所有订单操作、专业市场绑定关系，小件员绑定关系",
+              "node_type": "section",
+              "semantic_blocks": [
+                {
+                  "raw_text": "绑定逻辑，绑定条件：同一手机号才能进行绑定",
+                  "block_type": "constraint",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [],
+                  "constraints": [
+                    "同一手机号才能进行绑定"
+                  ],
+                  "entities": [
+                    "手机号",
+                    "绑定"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": "绑定逻辑",
+                  "embedding": null
+                },
+                {
+                  "raw_text": "绑定逻辑，绑定校验：校验绑定账号和被绑定账号的1-1绑定关系，不能重复绑定",
+                  "block_type": "constraint",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "校验绑定账号和被绑定账号的1-1绑定关系"
+                  ],
+                  "constraints": [
+                    "不能重复绑定"
+                  ],
+                  "entities": [
+                    "绑定账号",
+                    "被绑定账号",
+                    "绑定关系"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": "绑定逻辑",
+                  "embedding": null
+                },
+                {
+                  "raw_text": "绑定逻辑，数据关联查询：订单查询、所有订单操作、专业市场绑定关系，小件员绑定关系",
+                  "block_type": "description",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "订单查询",
+                    "所有订单操作"
+                  ],
+                  "constraints": [],
+                  "entities": [
+                    "订单",
+                    "订单操作",
+                    "专业市场绑定关系",
+                    "小件员绑定关系"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": "绑定逻辑",
+                  "embedding": null
+                }
+              ],
+              "children": [],
+              "images": [],
+              "references": []
+            },
+            {
+              "id": "node-18",
+              "title": "PC端整体页面结构：",
+              "level": 4,
+              "content": "",
+              "source_path": "二、需求 / 需求明细 / PC端整体页面结构",
+              "normalized_content": "",
+              "node_type": "section",
+              "semantic_blocks": [],
+              "children": [
+                {
+                  "id": "node-19",
+                  "title": "打单发货",
+                  "level": 5,
+                  "content": "",
+                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货",
+                  "normalized_content": "",
+                  "node_type": "section",
+                  "semantic_blocks": [],
+                  "children": [
+                    {
+                      "id": "node-20",
+                      "title": "订单管理",
+                      "level": 6,
+                      "content": "",
+                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理",
+                      "normalized_content": "",
+                      "node_type": "section",
+                      "semantic_blocks": [],
+                      "children": [
+                        {
+                          "id": "node-21",
+                          "title": "发货打单",
+                          "level": 7,
+                          "content": "",
+                          "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单",
+                          "normalized_content": "",
+                          "node_type": "section",
+                          "semantic_blocks": [],
+                          "children": [
+                            {
+                              "id": "node-22",
+                              "title": "待发货",
+                              "level": 8,
+                              "content": "",
+                              "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货",
+                              "normalized_content": "",
+                              "node_type": "section",
+                              "semantic_blocks": [],
+                              "children": [
+                                {
+                                  "id": "node-23",
+                                  "title": "查询条件筛选项",
+                                  "level": 9,
+                                  "content": "筛选条件无创建时间时，默认查询最近三个月的数据\n创建时间\n收件人姓名\n收件人手机\n收件省市",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 查询条件筛选项",
+                                  "normalized_content": "查询条件筛选项\n默认条件 → 当筛选条件无创建时间时，默认查询最近三个月的数据\n可用字段 → 创建时间，收件人姓名，收件人手机，收件省市",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "查询条件筛选项",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "查询条件筛选项"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "查询条件筛选项",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "默认条件 → 当筛选条件无创建时间时，默认查询最近三个月的数据",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "当筛选条件无创建时间时"
+                                      ],
+                                      "actions": [
+                                        "默认查询最近三个月的数据"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "筛选条件",
+                                        "创建时间"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "查询条件筛选项",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "可用字段 → 创建时间，收件人姓名，收件人手机，收件省市",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "创建时间",
+                                        "收件人姓名",
+                                        "收件人手机",
+                                        "收件省市"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "查询条件筛选项",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": [],
+                                  "references": []
+                                },
+                                {
+                                  "id": "node-24",
+                                  "title": "明细字段",
+                                  "level": 9,
+                                  "content": "订单号\n收件人名称\n收件人手机号\n收件人地址\n发件人名称\n发件人手机号\n发件城市\n包裹重量\n物品类型\n货品声明价值\n备注\n创建时间",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 明细字段",
+                                  "normalized_content": "订单明细字段\n展示订单的详细信息字段：订单号，收件人名称，收件人手机号，收件人地址，发件人名称，发件人手机号，发件城市，包裹重量，物品类型，货品声明价值，备注，创建时间",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "订单明细字段\n展示订单的详细信息字段：订单号，收件人名称，收件人手机号，收件人地址，发件人名称，发件人手机号，发件城市，包裹重量，物品类型，货品声明价值，备注，创建时间",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单号",
+                                        "收件人名称",
+                                        "收件人手机号",
+                                        "收件人地址",
+                                        "发件人名称",
+                                        "发件人手机号",
+                                        "发件城市",
+                                        "包裹重量",
+                                        "物品类型",
+                                        "货品声明价值",
+                                        "备注",
+                                        "创建时间"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "明细字段",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [
+                                    {
+                                      "id": "node-25",
+                                      "title": "物流产品",
+                                      "level": 10,
+                                      "content": "本期默认为「菜鸟标快」",
+                                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 明细字段 / 物流产品",
+                                      "normalized_content": "物流产品\n本期默认为菜鸟标快",
+                                      "node_type": "section",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "物流产品",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [],
+                                          "entities": [
+                                            "物流产品"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "物流产品",
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "本期默认为菜鸟标快",
+                                          "block_type": "constraint",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "本期默认为菜鸟标快"
+                                          ],
+                                          "entities": [
+                                            "菜鸟标快"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "物流产品",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": [],
+                                      "references": []
+                                    },
+                                    {
+                                      "id": "node-26",
+                                      "title": "支付方式",
+                                      "level": 10,
+                                      "content": "寄付\n到付",
+                                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 明细字段 / 支付方式",
+                                      "normalized_content": "支付方式\n支付方式，支付方式，寄付/到付",
+                                      "node_type": "section",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "支付方式，支付方式，寄付/到付",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [],
+                                          "entities": [
+                                            "支付方式"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "支付方式",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": [],
+                                      "references": []
+                                    },
+                                    {
+                                      "id": "node-27",
+                                      "title": "保价",
+                                      "level": 10,
+                                      "content": "是\n否",
+                                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 明细字段 / 保价",
+                                      "normalized_content": "保价\n保价功能状态选项为“是”或“否”",
+                                      "node_type": "section",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "保价",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [],
+                                          "entities": [
+                                            "保价"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "保价",
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "保价功能状态选项为“是”或“否”",
+                                          "block_type": "constraint",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "选项为“是”或“否”"
+                                          ],
+                                          "entities": [
+                                            "保价功能状态"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "保价",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": [],
+                                      "references": []
+                                    },
+                                    {
+                                      "id": "node-28",
+                                      "title": "揽收时间",
+                                      "level": 10,
+                                      "content": "默认为「当日揽」",
+                                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 明细字段 / 揽收时间",
+                                      "normalized_content": "揽收时间  \n揽收时间 → 默认设置 → 默认为「当日揽」",
+                                      "node_type": "section",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "揽收时间 → 默认设置 → 默认为「当日揽」",
+                                          "block_type": "rule",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "默认为「当日揽」"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "揽收时间"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "揽收时间",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": [],
+                                      "references": []
+                                    }
+                                  ],
+                                  "images": [],
+                                  "references": []
+                                },
+                                {
+                                  "id": "node-29",
+                                  "title": "批量导入",
+                                  "level": 9,
+                                  "content": "使用菜鸟模版菜鸟速递订单导入模板（最多一次导入1000条）.xlsx\n导单过程中有进度提醒\n导单完成后，如有导入失败的情况，页面空白处会显示导入错误的行，与错误原因\n导入的订单可以在”导入记录“查看\n单次导入上限：1000条，",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量导入",
+                                  "normalized_content": "批量导入\n使用菜鸟模版菜鸟速递订单导入模板（最多一次导入1000条）.xlsx进行导入，导入过程中有进度提醒，导入完成后如有失败在页面空白处显示错误行和原因，导入订单可在导入记录查看，单次导入上限1000条",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "批量导入",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "批量导入"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "批量导入",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "使用菜鸟模版菜鸟速递订单导入模板（最多一次导入1000条）.xlsx进行导入",
+                                      "block_type": "flow",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "使用菜鸟模版菜鸟速递订单导入模板进行导入"
+                                      ],
+                                      "constraints": [
+                                        "单次导入上限1000条"
+                                      ],
+                                      "entities": [
+                                        "菜鸟模版",
+                                        "菜鸟速递订单导入模板",
+                                        "导入"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "批量导入",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "导入过程中有进度提醒",
+                                      "block_type": "flow",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "导入过程中"
+                                      ],
+                                      "actions": [
+                                        "显示进度提醒"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "导入过程",
+                                        "进度提醒"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "批量导入",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "导入完成后如有失败在页面空白处显示错误行和原因",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "导入完成后",
+                                        "如有失败"
+                                      ],
+                                      "actions": [
+                                        "在页面空白处显示错误行和原因"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "导入完成",
+                                        "失败",
+                                        "页面",
+                                        "错误行",
+                                        "原因"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "批量导入",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "导入订单可在导入记录查看",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "查看导入订单"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "导入订单",
+                                        "导入记录"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "批量导入",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "单次导入上限1000条",
+                                      "block_type": "constraint",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [
+                                        "单次导入上限1000条"
+                                      ],
+                                      "entities": [
+                                        "导入"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "批量导入",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": [],
+                                  "references": [
+                                    "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcilogistics-oss.oss-cn-hangzhou.aliyuncs.com%2Fcnd%2F%25E8%258F%259C%25E9%25B8%259F%25E9%2580%259F%25E9%2580%2592%25E8%25AE%25A2%25E5%258D%2595%25E5%25AF%25BC%25E5%2585%25A5%25E6%25A8%25A1%25E6%259D%25BF%25EF%25BC%2588%25E6%259C%2580%25E5%25A4%259A%25E4%25B8%2580%25E6%25AC%25A1%25E5%25AF%25BC%25E5%2585%25A51000%25E6%259D%25A1%25EF%25BC%2589.xlsx&wdOrigin=BROWSELINK"
+                                  ]
+                                },
+                                {
+                                  "id": "node-30",
+                                  "title": "批量发货",
+                                  "level": 9,
+                                  "content": "（批量发货的上限？）\n发货后订单可至打印列表查询",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量发货",
+                                  "normalized_content": "批量发货\n查询条件，批量发货的上限？\n功能描述，发货后订单可至打印列表查询",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "批量发货",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "批量发货"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "批量发货",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "功能描述，发货后订单可至打印列表查询",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "发货后"
+                                      ],
+                                      "actions": [
+                                        "订单可至打印列表查询"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单",
+                                        "打印列表"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "批量发货",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [
+                                    {
+                                      "id": "node-31",
+                                      "title": "发货逻辑",
+                                      "level": 10,
+                                      "content": "默认揽收时间为「当日揽」，即90服务产品\n默认物流产品为「菜鸟标快」\n不支持包装服务，若客户有包装诉求，可在小件员端让小件员进行添加",
+                                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量发货 / 发货逻辑",
+                                      "normalized_content": "发货逻辑\n发货逻辑 → 揽收时间 → 默认揽收时间为当日揽，即90服务产品\n发货逻辑 → 物流产品 → 默认物流产品为菜鸟标快\n发货逻辑 → 包装服务 → 不支持包装服务，若客户有包装诉求，可在小件员端让小件员进行添加",
+                                      "node_type": "section",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "发货逻辑",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [],
+                                          "entities": [
+                                            "发货逻辑"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "发货逻辑",
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "发货逻辑 → 揽收时间 → 默认揽收时间为当日揽，即90服务产品",
+                                          "block_type": "rule",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "默认揽收时间为当日揽"
+                                          ],
+                                          "entities": [
+                                            "揽收时间",
+                                            "90服务产品"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "发货逻辑",
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "发货逻辑 → 物流产品 → 默认物流产品为菜鸟标快",
+                                          "block_type": "rule",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "默认物流产品为菜鸟标快"
+                                          ],
+                                          "entities": [
+                                            "物流产品",
+                                            "菜鸟标快"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "发货逻辑",
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "发货逻辑 → 包装服务 → 不支持包装服务，若客户有包装诉求，可在小件员端让小件员进行添加",
+                                          "block_type": "constraint",
+                                          "source_type": "content",
+                                          "conditions": [
+                                            "若客户有包装诉求"
+                                          ],
+                                          "actions": [
+                                            "可在小件员端让小件员进行添加"
+                                          ],
+                                          "constraints": [
+                                            "不支持包装服务"
+                                          ],
+                                          "entities": [
+                                            "包装服务",
+                                            "客户",
+                                            "小件员"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "发货逻辑",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": [],
+                                      "references": []
+                                    },
+                                    {
+                                      "id": "node-32",
+                                      "title": "报价&计费",
+                                      "level": 10,
+                                      "content": "其他情况使用散客划线报价进行下单",
+                                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量发货 / 报价&计费",
+                                      "normalized_content": "报价&计费，其他情况，使用散客划线报价进行下单",
+                                      "node_type": "section",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "报价&计费，其他情况，用户散客划线报价进行下单",
+                                          "block_type": "rule",
+                                          "source_type": "content",
+                                          "conditions": [
+                                            "其他情况"
+                                          ],
+                                          "actions": [
+                                            "用户散客划线报价进行下单"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "报价&计费"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "报价&计费",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [
+                                        {
+                                          "id": "node-33",
+                                          "title": "当同时满足下列条件时需使用专业市场报价下单",
+                                          "level": 11,
+                                          "content": "用户菜鸟账号绑定特定专业市场\n用户寄件地址在绑定的特定专业市场AOI内",
+                                          "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量发货 / 报价&计费 / 当同时满足下列条件时需使用专业市场报价下单",
+                                          "normalized_content": "当同时满足用户菜鸟账号绑定特定专业市场和用户寄件地址在绑定的特定专业市场AOI内时，需使用专业市场报价下单。",
+                                          "node_type": "section",
+                                          "semantic_blocks": [
+                                            {
+                                              "raw_text": "当同时满足用户菜鸟账号绑定特定专业市场和用户寄件地址在绑定的特定专业市场AOI内时，需使用专业市场报价下单。",
+                                              "block_type": "rule",
+                                              "source_type": "content",
+                                              "conditions": [
+                                                "用户菜鸟账号绑定特定专业市场",
+                                                "用户寄件地址在绑定的特定专业市场AOI内"
+                                              ],
+                                              "actions": [
+                                                "需使用专业市场报价下单"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "用户",
+                                                "菜鸟账号",
+                                                "专业市场",
+                                                "寄件地址",
+                                                "AOI",
+                                                "专业市场报价"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": "当同时满足下列条件时需使用专业市场报价下单",
+                                              "embedding": null
+                                            }
+                                          ],
+                                          "children": [],
+                                          "images": [],
+                                          "references": []
+                                        }
+                                      ],
+                                      "images": [],
+                                      "references": []
+                                    },
+                                    {
+                                      "id": "node-34",
+                                      "title": "选中需发货的订单，点击【批量发货】后弹出弹窗",
+                                      "level": 10,
+                                      "content": "弹窗标题：批量发货\n弹窗内容：确认批量发货吗？",
+                                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量发货 / 选中需发货的订单，点击【批量发货】后弹出弹窗",
+                                      "normalized_content": "订单发货\n批量发货，弹窗，当用户选中需发货的订单并点击批量发货按钮后弹出弹窗，弹窗标题为“批量发货”，内容为“确认批量发货吗？”",
+                                      "node_type": "section",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "订单发货\n批量发货，弹窗，当用户选中需发货的订单并点击批量发货按钮后弹出弹窗，弹窗标题为“批量发货”，内容为“确认批量发货吗？”",
+                                          "block_type": "flow",
+                                          "source_type": "content",
+                                          "conditions": [
+                                            "当用户选中需发货的订单并点击批量发货按钮后"
+                                          ],
+                                          "actions": [
+                                            "弹出弹窗"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "订单",
+                                            "批量发货按钮",
+                                            "弹窗"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "选中需发货的订单，点击【批量发货】后弹出弹窗",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [
+                                        {
+                                          "id": "node-35",
+                                          "title": "弹窗按钮：【取消】、【确认】",
+                                          "level": 11,
+                                          "content": "点击【取消】关闭弹窗",
+                                          "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量发货 / 选中需发货的订单，点击【批量发货】后弹出弹窗 / 弹窗按钮：【取消】、【确认】",
+                                          "normalized_content": "弹窗按钮，取消按钮，确认按钮，点击取消按钮关闭弹窗",
+                                          "node_type": "section",
+                                          "semantic_blocks": [
+                                            {
+                                              "raw_text": "弹窗按钮，取消按钮，确认按钮",
+                                              "block_type": "description",
+                                              "source_type": "content",
+                                              "conditions": [],
+                                              "actions": [],
+                                              "constraints": [],
+                                              "entities": [
+                                                "弹窗按钮",
+                                                "取消按钮",
+                                                "确认按钮"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": "事实上下文",
+                                              "embedding": null
+                                            },
+                                            {
+                                              "raw_text": "点击取消按钮关闭弹窗",
+                                              "block_type": "flow",
+                                              "source_type": "content",
+                                              "conditions": [
+                                                "点击取消按钮"
+                                              ],
+                                              "actions": [
+                                                "关闭弹窗"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "取消按钮",
+                                                "弹窗"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": "事实上下文",
+                                              "embedding": null
+                                            }
+                                          ],
+                                          "children": [
+                                            {
+                                              "id": "node-36",
+                                              "title": "点击【确认】则弹窗提示发货成功",
+                                              "level": 12,
+                                              "content": "弹窗标题：发货成功\n弹窗内容：您的订单全部发货成功\n弹窗选项：【关闭】点击则关闭弹窗停留当前页面",
+                                              "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量发货 / 选中需发货的订单，点击【批量发货】后弹出弹窗 / 弹窗按钮：【取消】、【确认】 / 点击【确认】则弹窗提示发货成功",
+                                              "normalized_content": "发货成功弹窗\n发货成功弹窗，触发操作，点击确认按钮时弹出弹窗\n发货成功弹窗，弹窗设置，标题为发货成功，内容为您的订单全部发货成功，选项为关闭，点击后关闭弹窗停留当前页面",
+                                              "node_type": "section",
+                                              "semantic_blocks": [
+                                                {
+                                                  "raw_text": "发货成功弹窗，触发操作，点击确认按钮时弹出弹窗",
+                                                  "block_type": "rule",
+                                                  "source_type": "content",
+                                                  "conditions": [
+                                                    "点击确认按钮时"
+                                                  ],
+                                                  "actions": [
+                                                    "弹出弹窗"
+                                                  ],
+                                                  "constraints": [],
+                                                  "entities": [
+                                                    "发货成功弹窗",
+                                                    "确认按钮"
+                                                  ],
+                                                  "is_noise": false,
+                                                  "source_node_path": null,
+                                                  "source_title": "事实上下文",
+                                                  "embedding": null
+                                                },
+                                                {
+                                                  "raw_text": "发货成功弹窗，弹窗设置，标题为发货成功，内容为您的订单全部发货成功，选项为关闭，点击后关闭弹窗停留当前页面",
+                                                  "block_type": "flow",
+                                                  "source_type": "content",
+                                                  "conditions": [
+                                                    "点击关闭按钮后"
+                                                  ],
+                                                  "actions": [
+                                                    "关闭弹窗",
+                                                    "停留当前页面"
+                                                  ],
+                                                  "constraints": [],
+                                                  "entities": [
+                                                    "发货成功弹窗",
+                                                    "关闭按钮",
+                                                    "当前页面",
+                                                    "订单"
+                                                  ],
+                                                  "is_noise": false,
+                                                  "source_node_path": null,
+                                                  "source_title": "事实上下文",
+                                                  "embedding": null
+                                                }
+                                              ],
+                                              "children": [],
+                                              "images": [],
+                                              "references": []
+                                            }
+                                          ],
+                                          "images": [],
+                                          "references": []
+                                        }
+                                      ],
+                                      "images": [],
+                                      "references": []
+                                    }
+                                  ],
+                                  "images": [],
+                                  "references": []
+                                },
+                                {
+                                  "id": "node-37",
+                                  "title": "批量删除",
+                                  "level": 9,
+                                  "content": "（批量删除的上限？）",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量删除",
+                                  "normalized_content": "批量删除\n批量删除 → → 定义批量删除的上限",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "批量删除",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "批量删除",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "批量删除 → → 定义批量删除的上限",
+                                      "block_type": "constraint",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [
+                                        "定义批量删除的上限"
+                                      ],
+                                      "entities": [],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "批量删除",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [
+                                    {
+                                      "id": "node-38",
+                                      "title": "选中需删除的订单，点击【批量删除】后弹出弹窗",
+                                      "level": 10,
+                                      "content": "弹窗标题：批量删除\n弹窗内容：确认批量删除吗？",
+                                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量删除 / 选中需删除的订单，点击【批量删除】后弹出弹窗",
+                                      "normalized_content": "批量删除弹窗  \n模块：批量删除弹窗，功能描述：用户选中需删除的订单并点击【批量删除】按钮后，弹出标题为“批量删除”、内容为“确认批量删除吗？”的弹窗",
+                                      "node_type": "section",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "用户选中需删除的订单并点击【批量删除】按钮后",
+                                          "block_type": "flow",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "选中需删除的订单",
+                                            "点击【批量删除】按钮"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "用户",
+                                            "订单",
+                                            "按钮"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "选中需删除的订单，点击【批量删除】后弹出弹窗",
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "弹出标题为“批量删除”、内容为“确认批量删除吗？”的弹窗",
+                                          "block_type": "flow",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "弹出弹窗"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "弹窗"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "选中需删除的订单，点击【批量删除】后弹出弹窗",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [
+                                        {
+                                          "id": "node-39",
+                                          "title": "弹窗按钮：【取消】、【确认】",
+                                          "level": 11,
+                                          "content": "点击【取消】关闭弹窗\n点击【确认】则删除已选中的订单",
+                                          "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 待发货 / 批量删除 / 选中需删除的订单，点击【批量删除】后弹出弹窗 / 弹窗按钮：【取消】、【确认】",
+                                          "normalized_content": "弹窗按钮：取消按钮点击关闭弹窗，确认按钮点击删除已选中的订单。",
+                                          "node_type": "section",
+                                          "semantic_blocks": [
+                                            {
+                                              "raw_text": "取消按钮点击关闭弹窗",
+                                              "block_type": "rule",
+                                              "source_type": "content",
+                                              "conditions": [],
+                                              "actions": [
+                                                "关闭弹窗"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "取消按钮",
+                                                "弹窗"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": "弹窗按钮：【取消】、【确认】",
+                                              "embedding": null
+                                            },
+                                            {
+                                              "raw_text": "确认按钮点击删除已选中的订单",
+                                              "block_type": "rule",
+                                              "source_type": "content",
+                                              "conditions": [],
+                                              "actions": [
+                                                "删除已选中的订单"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "确认按钮",
+                                                "订单"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": "弹窗按钮：【取消】、【确认】",
+                                              "embedding": null
+                                            }
+                                          ],
+                                          "children": [],
+                                          "images": [],
+                                          "references": []
+                                        }
+                                      ],
+                                      "images": [],
+                                      "references": []
+                                    }
+                                  ],
+                                  "images": [],
+                                  "references": []
+                                }
+                              ],
+                              "images": [],
+                              "references": []
+                            },
+                            {
+                              "id": "node-40",
+                              "title": "打印列表",
+                              "level": 8,
+                              "content": "",
+                              "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 打印列表",
+                              "normalized_content": "",
+                              "node_type": "section",
+                              "semantic_blocks": [],
+                              "children": [
+                                {
+                                  "id": "node-41",
+                                  "title": "查询条件筛选项",
+                                  "level": 9,
+                                  "content": "筛选条件无创建时间时，默认仅查询最近一周数据\n创建时间\n打印时间\n运单号-已支持多多运单查询\n订单号\n收件人\n收件人手机\n发件人\n发件人手机",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 打印列表 / 查询条件筛选项",
+                                  "normalized_content": "查询条件筛选项\n查询条件筛选项 → 默认查询规则 → 当筛选条件无创建时间时，默认仅查询最近一周数据。\n查询条件筛选项 → 查询条件字段 → 支持创建时间、打印时间、运单号（已支持多多运单查询）、订单号、收件人、收件人手机、发件人、发件人手机作为查询条件。",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "查询条件筛选项",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "查询条件筛选项"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "事实上下文",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "查询条件筛选项 → 默认查询规则 → 当筛选条件无创建时间时，默认仅查询最近一周数据。",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "当筛选条件无创建时间时"
+                                      ],
+                                      "actions": [
+                                        "默认仅查询最近一周数据"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "查询条件筛选项",
+                                        "创建时间"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "事实上下文",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "查询条件筛选项 → 查询条件字段 → 支持创建时间、打印时间、运单号（已支持多多运单查询）、订单号、收件人、收件人手机、发件人、发件人手机作为查询条件。",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "查询条件筛选项",
+                                        "创建时间",
+                                        "打印时间",
+                                        "运单号",
+                                        "订单号",
+                                        "收件人",
+                                        "收件人手机",
+                                        "发件人",
+                                        "发件人手机"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "事实上下文",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [
+                                    {
+                                      "id": "node-42",
+                                      "title": "打印状态",
+                                      "level": 10,
+                                      "content": "未打印\n提交打印\n打印成功\n打印失败",
+                                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 打印列表 / 查询条件筛选项 / 打印状态",
+                                      "normalized_content": "打印状态\n打印状态的枚举值：未打印，提交打印，打印成功，打印失败。",
+                                      "node_type": "section",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "打印状态",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [],
+                                          "entities": [
+                                            "打印状态"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "打印状态",
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "打印状态的枚举值：未打印，提交打印，打印成功，打印失败。",
+                                          "block_type": "constraint",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "未打印",
+                                            "提交打印",
+                                            "打印成功",
+                                            "打印失败"
+                                          ],
+                                          "entities": [
+                                            "打印状态"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "打印状态",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": [],
+                                      "references": []
+                                    },
+                                    {
+                                      "id": "node-43",
+                                      "title": "下单终端",
+                                      "level": 10,
+                                      "content": "PC端\n微信小程序\n支付宝小程序",
+                                      "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 打印列表 / 查询条件筛选项 / 下单终端",
+                                      "normalized_content": "下单终端\nPC端，微信小程序，支付宝小程序",
+                                      "node_type": "section",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "下单终端\nPC端，微信小程序，支付宝小程序",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [],
+                                          "entities": [
+                                            "下单终端",
+                                            "PC端",
+                                            "微信小程序",
+                                            "支付宝小程序"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "下单终端",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": [],
+                                      "references": []
+                                    }
+                                  ],
+                                  "images": [],
+                                  "references": []
+                                },
+                                {
+                                  "id": "node-44",
+                                  "title": "按钮",
+                                  "level": 9,
+                                  "content": "查询\n重置",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 打印列表 / 按钮",
+                                  "normalized_content": "按钮\n查询和重置功能",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "按钮查询和重置功能",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "查询",
+                                        "重置"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "按钮"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "按钮",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": [],
+                                  "references": []
+                                },
+                                {
+                                  "id": "node-45",
+                                  "title": "批量打印",
+                                  "level": 9,
+                                  "content": "可以筛选列表进行打印，不筛选的情况下，默认打印全部\n订单支持重复打印，【已取消】的订单无法勾选打印\n打印最大限制100，超过100单不可选择",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 打印列表 / 批量打印",
+                                  "normalized_content": "批量打印，可以筛选列表进行打印，不筛选则默认打印全部。订单支持重复打印，已取消的订单无法勾选。打印最大限制为100，超过则不可选择。",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "批量打印，可以筛选列表进行打印，不筛选则默认打印全部。",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "筛选列表",
+                                        "不筛选"
+                                      ],
+                                      "actions": [
+                                        "打印"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "列表"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "事实上下文",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "订单支持重复打印，",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "重复打印"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "事实上下文",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "已取消的订单无法勾选。",
+                                      "block_type": "constraint",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "订单已取消"
+                                      ],
+                                      "actions": [],
+                                      "constraints": [
+                                        "无法勾选"
+                                      ],
+                                      "entities": [
+                                        "订单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "事实上下文",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "打印最大限制为100，超过则不可选择。",
+                                      "block_type": "constraint",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "打印数量超过100"
+                                      ],
+                                      "actions": [
+                                        "不可选择"
+                                      ],
+                                      "constraints": [
+                                        "最大限制为100"
+                                      ],
+                                      "entities": [
+                                        "打印"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "事实上下文",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": [],
+                                  "references": []
+                                },
+                                {
+                                  "id": "node-46",
+                                  "title": "选择打印机",
+                                  "level": 9,
+                                  "content": "历史文档：开放平台-文档中心\n云打印操作手册：云打印编辑器使用手册.pdf\n打印模版：设计器",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 打印列表 / 选择打印机",
+                                  "normalized_content": "选择打印机\n历史文档：开放平台-文档中心，云打印操作手册：云打印编辑器使用手册.pdf，打印模版：设计器",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "选择打印机",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "选择打印机"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "打印机"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "事实上下文",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": [],
+                                  "references": [
+                                    "https://open.taobao.com/doc.htm?docId=107052&docType=1#ss11",
+                                    "https://support-cnkuaidi.taobao.com/doc.htm?spm=a219a.7386653.0.0.1508669adify2d#?docId=108595&docType=1",
+                                    "https://cloudprint-docs-resource.oss-cn-shanghai.aliyuncs.com/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/%E4%BA%91%E6%89%93%E5%8D%B0%E7%BC%96%E8%BE%91%E5%99%A8%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.pdf",
+                                    "https://cloudprint.cainiao.com/print/templates.htm"
+                                  ]
+                                },
+                                {
+                                  "id": "node-47",
+                                  "title": "近一周发货数据",
+                                  "level": 9,
+                                  "content": "点击后下方明细数据默认展示近7天的数据",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 打印列表 / 近一周发货数据",
+                                  "normalized_content": "近一周发货数据\n点击后下方明细数据默认展示近7天的数据",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "近一周发货数据",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "发货数据"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "近一周发货数据",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "点击后下方明细数据默认展示近7天的数据",
+                                      "block_type": "flow",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "点击后"
+                                      ],
+                                      "actions": [
+                                        "下方明细数据默认展示近7天的数据"
+                                      ],
+                                      "constraints": [
+                                        "默认展示近7天"
+                                      ],
+                                      "entities": [
+                                        "明细数据",
+                                        "近7天"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "近一周发货数据",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": [],
+                                  "references": []
+                                },
+                                {
+                                  "id": "node-48",
+                                  "title": "近一月发货数据",
+                                  "level": 9,
+                                  "content": "点击后下方明细数据默认展示近30天的数据",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 打印列表 / 近一月发货数据",
+                                  "normalized_content": "近一月发货数据\n近一月发货数据 → 明细数据 → 点击后默认展示近30天的数据",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "近一月发货数据",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "近一月发货数据"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "近一月发货数据",
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "近一月发货数据 → 明细数据 → 点击后默认展示近30天的数据",
+                                      "block_type": "flow",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "点击后"
+                                      ],
+                                      "actions": [
+                                        "默认展示近30天的数据"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "近一月发货数据",
+                                        "明细数据"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "近一月发货数据",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": [],
+                                  "references": []
+                                },
+                                {
+                                  "id": "node-49",
+                                  "title": "明细字段",
+                                  "level": 9,
+                                  "content": "运单号\n订单号\n收件人\n收件人联系方式\n收件人省\n收件人市\n收件人区县\n收件人地址\n发件人\n发件人联系方式\n发件城市\n物流产品\n创建时间\n订单来源\n商品名称\n订单备注\n运单状态\n打印时间\n下单终端\n打印状态",
+                                  "source_path": "二、需求 / 需求明细 / PC端整体页面结构 / 打单发货 / 订单管理 / 发货打单 / 打印列表 / 明细字段",
+                                  "normalized_content": "明细字段\n运单号，订单号，收件人，收件人联系方式，收件人省，收件人市，收件人区县，收件人地址，发件人，发件人联系方式，发件城市，物流产品，创建时间，订单来源，商品名称，订单备注，运单状态，打印时间，下单终端，打印状态",
+                                  "node_type": "section",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "明细字段 运单号，订单号，收件人，收件人联系方式，收件人省，收件人市，收件人区县，收件人地址，发件人，发件人联系方式，发件城市，物流产品，创建时间，订单来源，商品名称，订单备注，运单状态，打印时间，下单终端，打印状态",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "运单号",
+                                        "订单号",
+                                        "收件人",
+                                        "收件人联系方式",
+                                        "收件人省",
+                                        "收件人市",
+                                        "收件人区县",
+                                        "收件人地址",
+                                        "发件人",
+                                        "发件人联系方式",
+                                        "发件城市",
+                                        "物流产品",
+                                        "创建时间",
+                                        "订单来源",
+                                        "商品名称",
+                                        "订单备注",
+                                        "运单状态",
+                                        "打印时间",
+                                        "下单终端",
+                                        "打印状态"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": "事实上下文",
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": [],
+                                  "references": []
+                                }
+                              ],
+                              "images": [],
+                              "references": []
+                            }
+                          ],
+                          "images": [],
+                          "references": []
+                        }
+                      ],
+                      "images": [],
+                      "references": []
+                    }
+                  ],
+                  "images": [],
+                  "references": []
+                }
+              ],
+              "images": [],
+              "references": []
+            }
+          ],
+          "images": [],
+          "references": []
+        }
+      ],
+      "images": [],
+      "references": []
+    }
+  ],
+  "images": [],
+  "references": []
+}

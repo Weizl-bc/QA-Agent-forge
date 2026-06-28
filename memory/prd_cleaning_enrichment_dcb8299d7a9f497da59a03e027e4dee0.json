@@ -1,0 +1,2754 @@
+{
+  "id": "root",
+  "title": "ROOT",
+  "level": 0,
+  "content": "",
+  "normalized_content": "",
+  "node_type": "unknown",
+  "semantic_blocks": [],
+  "children": [
+    {
+      "id": "node-1",
+      "title": "菜鸟速递-电脑下单",
+      "level": 1,
+      "content": "",
+      "normalized_content": "",
+      "node_type": "unknown",
+      "semantic_blocks": [],
+      "children": [
+        {
+          "id": "node-2",
+          "title": "变更记录",
+          "level": 3,
+          "content": "| 日期 | 修订人 | 修订内容 |\n| --- | --- | --- |\n| 2025-10-17 | 檀金玉 | 创建文档 |\n|  |  |  |",
+          "normalized_content": "文档修订记录\n修订记录，修订记录，记录文档修订信息，包含字段：日期、修订人、修订内容，记录示例：2025-10-17、檀金玉、创建文档。",
+          "node_type": "requirement",
+          "semantic_blocks": [
+            {
+              "raw_text": "文档修订记录",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [],
+              "constraints": [],
+              "entities": [
+                "文档",
+                "修订记录"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "修订记录，修订记录，记录文档修订信息，",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "记录文档修订信息"
+              ],
+              "constraints": [],
+              "entities": [
+                "修订记录",
+                "文档"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "包含字段：日期、修订人、修订内容，",
+              "block_type": "constraint",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [],
+              "constraints": [],
+              "entities": [
+                "字段",
+                "日期",
+                "修订人",
+                "修订内容"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "记录示例：2025-10-17、檀金玉、创建文档。",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "创建文档"
+              ],
+              "constraints": [],
+              "entities": [
+                "用户",
+                "文档"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            }
+          ],
+          "children": [],
+          "images": []
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "node-3",
+      "title": "一、背景",
+      "level": 1,
+      "content": "",
+      "normalized_content": "",
+      "node_type": "unknown",
+      "semantic_blocks": [],
+      "children": [
+        {
+          "id": "node-6",
+          "title": ".链路",
+          "level": 2,
+          "content": "@startuml\nparticipant 菜鸟速递PC下单站点 as pczd\nparticipant tdbrp as tdbrp\nparticipant consign.web as consign.web\nparticipant tdtradeplatform as tdtradeplatform\nparticipant consign.core as consign.core\nparticipant 小程序 as xcx\npczd -> pczd: 菜鸟B账号登录\npczd -> tdbrp: 查询账号绑定关系\npczd -> xcx: 未绑定无法使用pc下单，手机扫码绑定\nxcx -> tdbrp: 绑定账号\npczd -> consign.web: 查询待发货订单\npczd -> consign.web: 批量导入待发货订单\npczd -> consign.web: 勾选订单批量发货\npczd -> tdtradeplatform: 查询待打印订单\npczd -> consign.core: 查询打印机设置\npczd -> consign.core: 保存打印机设置\npczd -> consign.core: 获取打印数据\npczd -> pczd: 打印\npczd -> consign.core: 更新打印状态\npczd -> consign.core: 查询免密支付签署协议\npczd -> pczd: 未签约免密，点击链接跳转，支付宝扫码签约\npczd -> payment.platform: 获取支付链接，发起支付\npczd -> pczd: 跳转页面，扫码支付||免密代扣\npczd -> consign.web: 导出订单\n@enduml",
+          "normalized_content": "菜鸟速递PC下单站点\n账号管理，账号登录与绑定，菜鸟B账号登录并查询账号绑定关系，未绑定无法使用pc下单时通过手机扫码绑定小程序账号\n订单管理，订单发货，查询待发货订单，批量导入待发货订单，勾选订单批量发货，导出订单\n订单管理，订单打印，查询待打印订单，查询并保存打印机设置，获取打印数据并执行打印，更新打印状态\n订单管理，订单支付，查询免密支付签署协议，未签约免密时点击链接跳转支付宝扫码签约，获取支付链接发起支付，跳转页面进行扫码支付或免密代扣",
+          "node_type": "requirement",
+          "semantic_blocks": [
+            {
+              "raw_text": "菜鸟速递PC下单站点",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "下单"
+              ],
+              "constraints": [],
+              "entities": [
+                "菜鸟速递PC下单站点"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "账号管理，账号登录与绑定",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "管理账号",
+                "登录账号",
+                "绑定账号"
+              ],
+              "constraints": [],
+              "entities": [
+                "账号"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "菜鸟B账号登录并查询账号绑定关系",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "菜鸟B账号登录",
+                "查询账号绑定关系"
+              ],
+              "constraints": [],
+              "entities": [
+                "菜鸟B账号",
+                "账号绑定关系"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "未绑定无法使用pc下单时通过手机扫码绑定小程序账号",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [
+                "未绑定小程序账号",
+                "无法使用pc下单时"
+              ],
+              "actions": [
+                "手机扫码",
+                "绑定小程序账号"
+              ],
+              "constraints": [
+                "未绑定小程序账号无法使用PC下单"
+              ],
+              "entities": [
+                "pc",
+                "手机",
+                "小程序账号"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "订单管理，订单发货",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "管理订单",
+                "订单发货"
+              ],
+              "constraints": [],
+              "entities": [
+                "订单",
+                "订单管理"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "查询待发货订单",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "查询待发货订单"
+              ],
+              "constraints": [
+                "订单状态必须为待发货"
+              ],
+              "entities": [
+                "待发货订单"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "批量导入待发货订单",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "批量导入待发货订单"
+              ],
+              "constraints": [
+                "只能导入待发货状态的订单"
+              ],
+              "entities": [
+                "订单"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "勾选订单批量发货",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "勾选订单",
+                "批量发货"
+              ],
+              "constraints": [],
+              "entities": [
+                "订单"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "导出订单",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "导出订单"
+              ],
+              "constraints": [],
+              "entities": [
+                "订单"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "订单管理，订单打印",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "管理订单",
+                "打印订单"
+              ],
+              "constraints": [],
+              "entities": [
+                "订单"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "查询待打印订单",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "查询待打印订单"
+              ],
+              "constraints": [],
+              "entities": [
+                "订单"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "查询并保存打印机设置",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "查询打印机设置",
+                "保存打印机设置"
+              ],
+              "constraints": [],
+              "entities": [
+                "打印机设置"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "获取打印数据并执行打印",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "获取打印数据",
+                "执行打印"
+              ],
+              "constraints": [],
+              "entities": [
+                "打印数据"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "更新打印状态",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "更新打印状态"
+              ],
+              "constraints": [],
+              "entities": [
+                "打印状态"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "订单管理，订单支付",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "管理订单",
+                "支付订单"
+              ],
+              "constraints": [],
+              "entities": [
+                "订单",
+                "支付"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "查询免密支付签署协议",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "查询免密支付签署协议"
+              ],
+              "constraints": [],
+              "entities": [
+                "免密支付协议"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "未签约免密时点击链接跳转支付宝扫码签约",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [
+                "未签约免密"
+              ],
+              "actions": [
+                "点击链接",
+                "跳转支付宝",
+                "扫码签约"
+              ],
+              "constraints": [],
+              "entities": [
+                "免密",
+                "链接",
+                "支付宝"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "获取支付链接发起支付",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "获取支付链接",
+                "发起支付"
+              ],
+              "constraints": [],
+              "entities": [
+                "支付链接",
+                "支付"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "跳转页面进行扫码支付或免密代扣",
+              "block_type": "flow",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "跳转页面",
+                "扫码支付",
+                "免密代扣"
+              ],
+              "constraints": [],
+              "entities": [
+                "页面"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            }
+          ],
+          "children": [],
+          "images": [
+            {
+              "id": "img-1",
+              "raw_markdown": "![image](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/a/6KYkegJwXTGAPzEb/38d948d4f0c64ca092378470dc76eafa3905.png)",
+              "alt_text": "image",
+              "src": "https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/a/6KYkegJwXTGAPzEb/38d948d4f0c64ca092378470dc76eafa3905.png",
+              "title": null,
+              "local_path": null,
+              "image_type": "unknown",
+              "ocr_text": "",
+              "visual_summary": "",
+              "is_noise": false,
+              "source_node_id": "node-6",
+              "source_node_path": "一、背景 / 3.链路",
+              "source_title": "3.链路"
+            }
+          ]
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "node-7",
+      "title": "二、需求",
+      "level": 1,
+      "content": "",
+      "normalized_content": "",
+      "node_type": "unknown",
+      "semantic_blocks": [],
+      "children": [
+        {
+          "id": "node-8",
+          "title": "需求描述",
+          "level": 2,
+          "content": "| 系统 | 需求 | 负责产品 | 优先级 | 技术负责人 |\n| --- | --- | --- | --- | --- |\n| 小程序 | 扫码绑定账号 |  |  |  |\n| PC端 | 电脑下单 |  |  |  |",
+          "normalized_content": "系统需求规划\n小程序，扫码绑定账号，扫码绑定账号\nPC端，电脑下单，电脑下单",
+          "node_type": "requirement",
+          "semantic_blocks": [
+            {
+              "raw_text": "小程序，扫码绑定账号，扫码绑定账号",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "扫码",
+                "绑定账号"
+              ],
+              "constraints": [],
+              "entities": [
+                "小程序",
+                "账号"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            },
+            {
+              "raw_text": "PC端，电脑下单，电脑下单",
+              "block_type": "description",
+              "source_type": "content",
+              "conditions": [],
+              "actions": [
+                "电脑下单"
+              ],
+              "constraints": [],
+              "entities": [
+                "PC端",
+                "电脑"
+              ],
+              "is_noise": false,
+              "source_node_path": null,
+              "source_title": null,
+              "embedding": null
+            }
+          ],
+          "children": [],
+          "images": []
+        },
+        {
+          "id": "node-9",
+          "title": "需求明细",
+          "level": 2,
+          "content": "",
+          "normalized_content": "",
+          "node_type": "unknown",
+          "semantic_blocks": [],
+          "children": [
+            {
+              "id": "node-10",
+              "title": "电脑下单新建独立的PC页面",
+              "level": 3,
+              "content": "https://cn-x-gateway.cainiao.com/cone/cnsd-c/queryWaybill",
+              "normalized_content": "查询运单\n查询运单，查询条件，运单号，寄件人，收件人，运单状态，创建时间\n查询运单，操作，点击查询按钮根据条件筛选运单列表数据，点击重置按钮清空查询条件\n查询运单，列表字段，运单号，寄件人，收件人，寄件地址，收件地址，运单状态，创建时间\n查询运单，列表操作，点击查看详情跳转至运单详情页面",
+              "node_type": "requirement",
+              "semantic_blocks": [
+                {
+                  "raw_text": "查询运单",
+                  "block_type": "description",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "查询运单"
+                  ],
+                  "constraints": [],
+                  "entities": [
+                    "运单"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                },
+                {
+                  "raw_text": "查询运单，查询条件，运单号，寄件人，收件人，运单状态，创建时间",
+                  "block_type": "description",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "查询运单"
+                  ],
+                  "constraints": [],
+                  "entities": [
+                    "运单",
+                    "运单号",
+                    "寄件人",
+                    "收件人",
+                    "运单状态",
+                    "创建时间"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                },
+                {
+                  "raw_text": "查询运单，操作，点击查询按钮根据条件筛选运单列表数据，点击重置按钮清空查询条件",
+                  "block_type": "flow",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "查询运单",
+                    "点击查询按钮",
+                    "根据条件筛选运单列表数据",
+                    "点击重置按钮",
+                    "清空查询条件"
+                  ],
+                  "constraints": [],
+                  "entities": [
+                    "运单",
+                    "查询按钮",
+                    "运单列表",
+                    "重置按钮",
+                    "查询条件"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                },
+                {
+                  "raw_text": "查询运单，列表字段，运单号，寄件人，收件人，寄件地址，收件地址，运单状态，创建时间",
+                  "block_type": "description",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "查询运单"
+                  ],
+                  "constraints": [],
+                  "entities": [
+                    "运单",
+                    "列表",
+                    "运单号",
+                    "寄件人",
+                    "收件人",
+                    "寄件地址",
+                    "收件地址",
+                    "运单状态",
+                    "创建时间"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                },
+                {
+                  "raw_text": "查询运单，列表操作，点击查看详情跳转至运单详情页面",
+                  "block_type": "flow",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "查询运单",
+                    "操作列表",
+                    "点击查看详情",
+                    "跳转至运单详情页面"
+                  ],
+                  "constraints": [],
+                  "entities": [
+                    "运单",
+                    "列表",
+                    "查看详情",
+                    "运单详情页面"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                }
+              ],
+              "children": [],
+              "images": []
+            },
+            {
+              "id": "node-11",
+              "title": "页面登录方式",
+              "level": 3,
+              "content": "",
+              "normalized_content": "",
+              "node_type": "unknown",
+              "semantic_blocks": [],
+              "children": [
+                {
+                  "id": "node-12",
+                  "title": "密码登录",
+                  "level": 4,
+                  "content": "只限账号名和手机号登录，不显示「邮箱」登录;",
+                  "normalized_content": "登录页面\n登录模块，登录方式，只限账号名和手机号登录，不显示邮箱登录",
+                  "node_type": "requirement",
+                  "semantic_blocks": [
+                    {
+                      "raw_text": "登录页面",
+                      "block_type": "description",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [],
+                      "constraints": [],
+                      "entities": [
+                        "登录页面"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": null,
+                      "embedding": null
+                    },
+                    {
+                      "raw_text": "\n登录模块，登录方式，只限账号名和手机号登录",
+                      "block_type": "constraint",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [
+                        "登录"
+                      ],
+                      "constraints": [
+                        "登录方式只限账号名和手机号"
+                      ],
+                      "entities": [
+                        "登录模块",
+                        "登录方式",
+                        "账号名",
+                        "手机号"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": null,
+                      "embedding": null
+                    },
+                    {
+                      "raw_text": "，不显示邮箱登录",
+                      "block_type": "constraint",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [
+                        "不显示邮箱登录"
+                      ],
+                      "constraints": [
+                        "不显示邮箱登录"
+                      ],
+                      "entities": [
+                        "邮箱登录"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": null,
+                      "embedding": null
+                    }
+                  ],
+                  "children": [],
+                  "images": []
+                },
+                {
+                  "id": "node-13",
+                  "title": "短信登录",
+                  "level": 4,
+                  "content": "用户可以通过手机号注册菜鸟会员进行使用：",
+                  "normalized_content": "菜鸟会员注册\n菜鸟会员注册，手机号注册，用户可以通过手机号注册菜鸟会员进行使用。",
+                  "node_type": "requirement",
+                  "semantic_blocks": [
+                    {
+                      "raw_text": "菜鸟会员注册",
+                      "block_type": "description",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [
+                        "注册菜鸟会员"
+                      ],
+                      "constraints": [],
+                      "entities": [
+                        "菜鸟会员"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": null,
+                      "embedding": null
+                    },
+                    {
+                      "raw_text": "手机号注册",
+                      "block_type": "description",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [
+                        "使用手机号注册"
+                      ],
+                      "constraints": [],
+                      "entities": [
+                        "手机号"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": null,
+                      "embedding": null
+                    },
+                    {
+                      "raw_text": "用户可以通过手机号注册菜鸟会员进行使用",
+                      "block_type": "rule",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [
+                        "用户通过手机号注册菜鸟会员",
+                        "用户使用菜鸟会员"
+                      ],
+                      "constraints": [],
+                      "entities": [
+                        "用户",
+                        "手机号",
+                        "菜鸟会员"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": null,
+                      "embedding": null
+                    }
+                  ],
+                  "children": [],
+                  "images": []
+                },
+                {
+                  "id": "node-14",
+                  "title": "菜鸟账号登录",
+                  "level": 4,
+                  "content": "菜鸟账号应该可以签约免密代扣；",
+                  "normalized_content": "菜鸟账号\n菜鸟账号，签约，菜鸟账号签约免密代扣",
+                  "node_type": "requirement",
+                  "semantic_blocks": [
+                    {
+                      "raw_text": "菜鸟账号",
+                      "block_type": "description",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [],
+                      "constraints": [],
+                      "entities": [
+                        "菜鸟账号"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": null,
+                      "embedding": null
+                    },
+                    {
+                      "raw_text": "菜鸟账号，签约，菜鸟账号签约免密代扣",
+                      "block_type": "flow",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [
+                        "签约",
+                        "签约免密代扣"
+                      ],
+                      "constraints": [],
+                      "entities": [
+                        "菜鸟账号"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": null,
+                      "embedding": null
+                    }
+                  ],
+                  "children": [],
+                  "images": []
+                },
+                {
+                  "id": "node-15",
+                  "title": "淘宝账号登录",
+                  "level": 4,
+                  "content": "淘宝账号应该可以签约免密代扣；",
+                  "normalized_content": "淘宝账号\n淘宝账号，签约，淘宝账号可以签约免密代扣",
+                  "node_type": "requirement",
+                  "semantic_blocks": [
+                    {
+                      "raw_text": "淘宝账号可以签约免密代扣",
+                      "block_type": "rule",
+                      "source_type": "content",
+                      "conditions": [],
+                      "actions": [
+                        "签约免密代扣"
+                      ],
+                      "constraints": [
+                        "淘宝账号允许签约免密代扣"
+                      ],
+                      "entities": [
+                        "淘宝账号",
+                        "免密代扣"
+                      ],
+                      "is_noise": false,
+                      "source_node_path": null,
+                      "source_title": null,
+                      "embedding": null
+                    }
+                  ],
+                  "children": [],
+                  "images": []
+                }
+              ],
+              "images": []
+            },
+            {
+              "id": "node-16",
+              "title": "使用账号",
+              "level": 3,
+              "content": "微信小程序使用菜鸟会员C端账号;\nPC端使用菜鸟会员B端账号下的个人主体账号;",
+              "normalized_content": "账号体系\n账号体系，账号使用规则，微信小程序使用菜鸟会员C端账号，PC端使用菜鸟会员B端账号下的个人主体账号",
+              "node_type": "requirement",
+              "semantic_blocks": [
+                {
+                  "raw_text": "微信小程序使用菜鸟会员C端账号",
+                  "block_type": "rule",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "使用菜鸟会员C端账号"
+                  ],
+                  "constraints": [],
+                  "entities": [
+                    "微信小程序",
+                    "菜鸟会员C端账号"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                },
+                {
+                  "raw_text": "PC端使用菜鸟会员B端账号下的个人主体账号",
+                  "block_type": "rule",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "使用菜鸟会员B端账号下的个人主体账号"
+                  ],
+                  "constraints": [
+                    "仅限在PC端使用",
+                    "必须使用菜鸟会员B端账号下的个人主体账号"
+                  ],
+                  "entities": [
+                    "PC端",
+                    "菜鸟会员",
+                    "B端账号",
+                    "个人主体账号"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                }
+              ],
+              "children": [],
+              "images": []
+            },
+            {
+              "id": "node-17",
+              "title": "绑定逻辑",
+              "level": 3,
+              "content": "同一手机号才能进行绑定;\n校验绑定账号和被绑定账号的1-1绑定关系，不能重复绑定;\n数据关联查询：订单查询、所有订单操作、专业市场绑定关系，小件员绑定关系;",
+              "normalized_content": "绑定管理\n绑定管理，绑定规则，同一手机号才能进行绑定，校验绑定账号和被绑定账号的1-1绑定关系，不能重复绑定\n绑定管理，数据关联查询，关联查询订单查询、所有订单操作、专业市场绑定关系、小件员绑定关系",
+              "node_type": "requirement",
+              "semantic_blocks": [
+                {
+                  "raw_text": "绑定管理",
+                  "block_type": "description",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [],
+                  "constraints": [],
+                  "entities": [],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                },
+                {
+                  "raw_text": "同一手机号才能进行绑定",
+                  "block_type": "constraint",
+                  "source_type": "content",
+                  "conditions": [
+                    "手机号相同"
+                  ],
+                  "actions": [
+                    "进行绑定"
+                  ],
+                  "constraints": [
+                    "只能使用同一手机号进行绑定"
+                  ],
+                  "entities": [
+                    "手机号"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                },
+                {
+                  "raw_text": "校验绑定账号和被绑定账号的1-1绑定关系",
+                  "block_type": "rule",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "校验绑定账号和被绑定账号的1-1绑定关系"
+                  ],
+                  "constraints": [
+                    "绑定账号和被绑定账号必须为1-1绑定关系"
+                  ],
+                  "entities": [
+                    "绑定账号",
+                    "被绑定账号",
+                    "绑定关系"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                },
+                {
+                  "raw_text": "不能重复绑定",
+                  "block_type": "constraint",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "绑定"
+                  ],
+                  "constraints": [
+                    "不能重复绑定"
+                  ],
+                  "entities": [],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                },
+                {
+                  "raw_text": "关联查询订单查询、所有订单操作、专业市场绑定关系、小件员绑定关系",
+                  "block_type": "description",
+                  "source_type": "content",
+                  "conditions": [],
+                  "actions": [
+                    "关联查询",
+                    "订单查询",
+                    "订单操作",
+                    "绑定专业市场关系",
+                    "绑定小件员关系"
+                  ],
+                  "constraints": [],
+                  "entities": [
+                    "订单",
+                    "专业市场",
+                    "小件员"
+                  ],
+                  "is_noise": false,
+                  "source_node_path": null,
+                  "source_title": null,
+                  "embedding": null
+                }
+              ],
+              "children": [],
+              "images": []
+            },
+            {
+              "id": "node-18",
+              "title": "PC端整体页面结构：",
+              "level": 4,
+              "content": "",
+              "normalized_content": "",
+              "node_type": "unknown",
+              "semantic_blocks": [],
+              "children": [
+                {
+                  "id": "node-19",
+                  "title": "打单发货",
+                  "level": 5,
+                  "content": "",
+                  "normalized_content": "",
+                  "node_type": "unknown",
+                  "semantic_blocks": [],
+                  "children": [
+                    {
+                      "id": "node-20",
+                      "title": "订单管理",
+                      "level": 6,
+                      "content": "",
+                      "normalized_content": "",
+                      "node_type": "unknown",
+                      "semantic_blocks": [],
+                      "children": [
+                        {
+                          "id": "node-21",
+                          "title": "发货打单",
+                          "level": 7,
+                          "content": "",
+                          "normalized_content": "",
+                          "node_type": "unknown",
+                          "semantic_blocks": [],
+                          "children": [
+                            {
+                              "id": "node-22",
+                              "title": "待发货",
+                              "level": 8,
+                              "content": "",
+                              "normalized_content": "",
+                              "node_type": "unknown",
+                              "semantic_blocks": [],
+                              "children": [
+                                {
+                                  "id": "node-23",
+                                  "title": "查询条件筛选项",
+                                  "level": 9,
+                                  "content": "筛选条件无创建时间时，默认查询最近三个月的数据\n创建时间\n收件人姓名\n收件人手机\n收件省市",
+                                  "normalized_content": "筛选条件\n查询条件，筛选条件，创建时间，收件人姓名，收件人手机，收件省市，筛选条件无创建时间时默认查询最近三个月的数据",
+                                  "node_type": "requirement",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "查询条件，筛选条件，创建时间，收件人姓名，收件人手机，收件省市",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "查询条件",
+                                        "筛选条件",
+                                        "创建时间",
+                                        "收件人姓名",
+                                        "收件人手机",
+                                        "收件省市"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "筛选条件无创建时间时默认查询最近三个月的数据",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "筛选条件无创建时间"
+                                      ],
+                                      "actions": [
+                                        "查询最近三个月的数据"
+                                      ],
+                                      "constraints": [
+                                        "无创建时间筛选条件时，查询时间范围限制为最近三个月"
+                                      ],
+                                      "entities": [
+                                        "筛选条件",
+                                        "创建时间"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": []
+                                },
+                                {
+                                  "id": "node-24",
+                                  "title": "明细字段",
+                                  "level": 9,
+                                  "content": "订单号\n收件人名称\n收件人手机号\n收件人地址\n发件人名称\n发件人手机号\n发件城市\n包裹重量\n物品类型\n货品声明价值\n备注\n创建时间",
+                                  "normalized_content": "订单管理\n订单管理，订单列表，表格字段包含订单号，收件人名称，收件人手机号，收件人地址，发件人名称，发件人手机号，发件城市，包裹重量，物品类型，货品声明价值，备注，创建时间",
+                                  "node_type": "requirement",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "订单管理",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "订单管理，订单列表，表格字段包含订单号，收件人名称，收件人手机号，收件人地址，发件人名称，发件人手机号，发件城市，包裹重量，物品类型，货品声明价值，备注，创建时间",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单管理",
+                                        "订单列表",
+                                        "表格",
+                                        "订单号",
+                                        "收件人名称",
+                                        "收件人手机号",
+                                        "收件人地址",
+                                        "发件人名称",
+                                        "发件人手机号",
+                                        "发件城市",
+                                        "包裹重量",
+                                        "物品类型",
+                                        "货品声明价值",
+                                        "备注",
+                                        "创建时间"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [
+                                    {
+                                      "id": "node-25",
+                                      "title": "物流产品",
+                                      "level": 10,
+                                      "content": "本期默认为「菜鸟标快」",
+                                      "normalized_content": "默认设置\n默认设置，默认值，本期默认为菜鸟标快",
+                                      "node_type": "requirement",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "默认设置\n默认设置，默认值，本期默认为菜鸟标快",
+                                          "block_type": "rule",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "设置默认值为菜鸟标快"
+                                          ],
+                                          "constraints": [
+                                            "本期默认值为菜鸟标快"
+                                          ],
+                                          "entities": [
+                                            "默认设置",
+                                            "默认值",
+                                            "菜鸟标快"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": "默认设置",
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": []
+                                    },
+                                    {
+                                      "id": "node-26",
+                                      "title": "支付方式",
+                                      "level": 10,
+                                      "content": "寄付\n到付",
+                                      "normalized_content": "支付方式\n支付方式，支付方式，支付方式（寄付，到付）",
+                                      "node_type": "unknown",
+                                      "semantic_blocks": [],
+                                      "children": [],
+                                      "images": []
+                                    },
+                                    {
+                                      "id": "node-27",
+                                      "title": "保价",
+                                      "level": 10,
+                                      "content": "是\n否",
+                                      "normalized_content": "是",
+                                      "node_type": "unknown",
+                                      "semantic_blocks": [],
+                                      "children": [],
+                                      "images": []
+                                    },
+                                    {
+                                      "id": "node-28",
+                                      "title": "揽收时间",
+                                      "level": 10,
+                                      "content": "默认为「当日揽」",
+                                      "normalized_content": "默认配置\n默认配置，默认值，默认值为「当日揽」",
+                                      "node_type": "requirement",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "默认配置",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [],
+                                          "entities": [
+                                            "默认配置"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "默认配置，默认值，默认值为「当日揽」",
+                                          "block_type": "rule",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "默认值为「当日揽」"
+                                          ],
+                                          "entities": [
+                                            "默认配置",
+                                            "默认值",
+                                            "当日揽"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": []
+                                    }
+                                  ],
+                                  "images": []
+                                },
+                                {
+                                  "id": "node-29",
+                                  "title": "批量导入",
+                                  "level": 9,
+                                  "content": "使用菜鸟模版菜鸟速递订单导入模板（最多一次导入1000条）.xlsx\n导单过程中有进度提醒\n导单完成后，如有导入失败的情况，页面空白处会显示导入错误的行，与错误原因\n导入的订单可以在”导入记录“查看\n单次导入上限：1000条，",
+                                  "normalized_content": "菜鸟速递订单导入\n订单导入，导入模板，使用菜鸟模版菜鸟速递订单导入模板（最多一次导入1000条）.xlsx，单次导入上限1000条\n订单导入，导入过程，导单过程中有进度提醒\n订单导入，导入结果，导单完成后如有导入失败的情况页面空白处会显示导入错误的行与错误原因\n订单导入，导入记录，导入的订单可以在导入记录查看",
+                                  "node_type": "requirement",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "菜鸟速递订单导入",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "导入菜鸟速递订单"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "菜鸟速递",
+                                        "订单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "订单导入，导入模板，使用菜鸟模版菜鸟速递订单导入模板（最多一次导入1000条）.xlsx",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "导入订单",
+                                        "导入模板",
+                                        "使用菜鸟速递订单导入模板"
+                                      ],
+                                      "constraints": [
+                                        "必须使用菜鸟速递订单导入模板",
+                                        "单次导入数量最多为1000条"
+                                      ],
+                                      "entities": [
+                                        "订单",
+                                        "导入模板",
+                                        "菜鸟速递订单导入模板",
+                                        "菜鸟速递"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "单次导入上限1000条",
+                                      "block_type": "constraint",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "导入"
+                                      ],
+                                      "constraints": [
+                                        "单次导入数量上限为1000条"
+                                      ],
+                                      "entities": [],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "订单导入，导入过程，导单过程中有进度提醒",
+                                      "block_type": "flow",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "在导单过程中"
+                                      ],
+                                      "actions": [
+                                        "导入订单",
+                                        "提醒进度"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "订单导入，导入结果，导单完成后如有导入失败的情况页面空白处会显示导入错误的行与错误原因",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "导单完成后",
+                                        "有导入失败的情况"
+                                      ],
+                                      "actions": [
+                                        "导入订单",
+                                        "导单完成",
+                                        "导入失败",
+                                        "显示导入错误的行与错误原因"
+                                      ],
+                                      "constraints": [
+                                        "导入失败时，页面空白处需显示导入错误的行与错误原因"
+                                      ],
+                                      "entities": [
+                                        "订单",
+                                        "导入结果",
+                                        "页面",
+                                        "导入错误的行",
+                                        "错误原因"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "订单导入，导入记录，导入的订单可以在导入记录查看",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "导入订单",
+                                        "查看导入记录"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单",
+                                        "导入记录"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": []
+                                },
+                                {
+                                  "id": "node-30",
+                                  "title": "批量发货",
+                                  "level": 9,
+                                  "content": "（批量发货的上限？）\n发货后订单可至打印列表查询",
+                                  "normalized_content": "订单发货\n批量发货，批量发货上限，待确认批量发货的上限\n打印列表，订单查询，发货后订单可至打印列表查询",
+                                  "node_type": "requirement",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "订单发货",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "订单发货"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "批量发货",
+                                      "block_type": "flow",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "批量发货"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "批量发货上限",
+                                      "block_type": "constraint",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "打印列表",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "打印列表"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "列表"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "订单查询",
+                                      "block_type": "flow",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "查询订单"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "发货后订单可至打印列表查询",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "订单发货后"
+                                      ],
+                                      "actions": [
+                                        "发货",
+                                        "跳转至打印列表",
+                                        "查询订单"
+                                      ],
+                                      "constraints": [
+                                        "订单必须发货后才可至打印列表查询"
+                                      ],
+                                      "entities": [
+                                        "订单",
+                                        "打印列表"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [
+                                    {
+                                      "id": "node-31",
+                                      "title": "发货逻辑",
+                                      "level": 10,
+                                      "content": "默认揽收时间为「当日揽」，即90服务产品\n默认物流产品为「菜鸟标快」\n不支持包装服务，若客户有包装诉求，可在小件员端让小件员进行添加",
+                                      "normalized_content": "默认配置\n默认配置，揽收时间，默认揽收时间为当日揽即90服务产品\n默认配置，物流产品，默认物流产品为菜鸟标快\n默认配置，包装服务，不支持包装服务若客户有包装诉求可在小件员端让小件员进行添加",
+                                      "node_type": "requirement",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "默认配置，揽收时间，默认揽收时间为当日揽即90服务产品",
+                                          "block_type": "rule",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "默认揽收时间为当日揽（即90服务产品）"
+                                          ],
+                                          "entities": [
+                                            "揽收时间",
+                                            "当日揽",
+                                            "90服务产品"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "默认配置，物流产品，默认物流产品为菜鸟标快",
+                                          "block_type": "rule",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "默认物流产品为菜鸟标快"
+                                          ],
+                                          "entities": [
+                                            "默认配置",
+                                            "物流产品",
+                                            "菜鸟标快"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "默认配置，包装服务，不支持包装服务",
+                                          "block_type": "constraint",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "不支持包装服务"
+                                          ],
+                                          "entities": [
+                                            "包装服务"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "若客户有包装诉求可在小件员端让小件员进行添加",
+                                          "block_type": "flow",
+                                          "source_type": "content",
+                                          "conditions": [
+                                            "客户有包装诉求"
+                                          ],
+                                          "actions": [
+                                            "小件员添加包装诉求"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "客户",
+                                            "包装诉求",
+                                            "小件员端",
+                                            "小件员"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": []
+                                    },
+                                    {
+                                      "id": "node-32",
+                                      "title": "报价&计费",
+                                      "level": 10,
+                                      "content": "其他情况使用散客划线报价进行下单",
+                                      "normalized_content": "下单\n下单，散客下单，其他情况使用散客划线报价进行下单",
+                                      "node_type": "requirement",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "下单",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "下单"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "散客下单",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "散客下单"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "散客"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "其他情况使用散客划线报价进行下单",
+                                          "block_type": "rule",
+                                          "source_type": "content",
+                                          "conditions": [
+                                            "属于其他情况"
+                                          ],
+                                          "actions": [
+                                            "使用散客划线报价",
+                                            "下单"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "散客",
+                                            "划线报价"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [
+                                        {
+                                          "id": "node-33",
+                                          "title": "当同时满足下列条件时需使用专业市场报价下单",
+                                          "level": 11,
+                                          "content": "用户菜鸟账号绑定特定专业市场\n用户寄件地址在绑定的特定专业市场AOI内",
+                                          "normalized_content": "特定专业市场寄件\n前置条件，账号与地址校验，用户菜鸟账号绑定特定专业市场，用户寄件地址在绑定的特定专业市场AOI内",
+                                          "node_type": "requirement",
+                                          "semantic_blocks": [
+                                            {
+                                              "raw_text": "特定专业市场寄件",
+                                              "block_type": "description",
+                                              "source_type": "content",
+                                              "conditions": [],
+                                              "actions": [
+                                                "寄件"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "专业市场"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": null,
+                                              "embedding": null
+                                            },
+                                            {
+                                              "raw_text": "前置条件，账号与地址校验",
+                                              "block_type": "constraint",
+                                              "source_type": "content",
+                                              "conditions": [
+                                                "账号与地址校验通过"
+                                              ],
+                                              "actions": [
+                                                "校验账号与地址"
+                                              ],
+                                              "constraints": [
+                                                "账号与地址需进行校验"
+                                              ],
+                                              "entities": [
+                                                "账号",
+                                                "地址"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": null,
+                                              "embedding": null
+                                            },
+                                            {
+                                              "raw_text": "用户菜鸟账号绑定特定专业市场",
+                                              "block_type": "constraint",
+                                              "source_type": "content",
+                                              "conditions": [],
+                                              "actions": [
+                                                "绑定菜鸟账号与特定专业市场"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "用户",
+                                                "菜鸟账号",
+                                                "专业市场"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": null,
+                                              "embedding": null
+                                            },
+                                            {
+                                              "raw_text": "用户寄件地址在绑定的特定专业市场AOI内",
+                                              "block_type": "constraint",
+                                              "source_type": "content",
+                                              "conditions": [
+                                                "用户寄件地址在绑定的特定专业市场AOI内"
+                                              ],
+                                              "actions": [],
+                                              "constraints": [
+                                                "寄件地址必须在绑定的特定专业市场AOI内"
+                                              ],
+                                              "entities": [
+                                                "用户",
+                                                "寄件地址",
+                                                "专业市场",
+                                                "AOI"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": null,
+                                              "embedding": null
+                                            }
+                                          ],
+                                          "children": [],
+                                          "images": []
+                                        }
+                                      ],
+                                      "images": []
+                                    },
+                                    {
+                                      "id": "node-34",
+                                      "title": "选中需发货的订单，点击批量发货后弹出弹窗",
+                                      "level": 10,
+                                      "content": "弹窗标题：批量发货\n弹窗内容：确认批量发货吗？",
+                                      "normalized_content": "批量发货弹窗\n批量发货弹窗，弹窗展示，弹窗标题为批量发货，弹窗内容为确认批量发货吗？",
+                                      "node_type": "requirement",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "批量发货弹窗",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [],
+                                          "entities": [
+                                            "批量发货弹窗"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "批量发货弹窗，弹窗展示",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "展示批量发货弹窗"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "批量发货弹窗"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "弹窗标题为批量发货",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "弹窗标题必须为批量发货"
+                                          ],
+                                          "entities": [
+                                            "弹窗",
+                                            "标题"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "弹窗内容为确认批量发货吗？",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "弹出弹窗",
+                                            "确认批量发货"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "弹窗"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [
+                                        {
+                                          "id": "node-35",
+                                          "title": "弹窗按钮：取消、确认",
+                                          "level": 11,
+                                          "content": "点击【取消】关闭弹窗",
+                                          "normalized_content": "弹窗\n弹窗，取消，点击【取消】关闭弹窗",
+                                          "node_type": "requirement",
+                                          "semantic_blocks": [
+                                            {
+                                              "raw_text": "弹窗",
+                                              "block_type": "description",
+                                              "source_type": "content",
+                                              "conditions": [],
+                                              "actions": [
+                                                "弹出窗口"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "弹窗"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": null,
+                                              "embedding": null
+                                            },
+                                            {
+                                              "raw_text": "弹窗，取消，点击【取消】关闭弹窗",
+                                              "block_type": "flow",
+                                              "source_type": "content",
+                                              "conditions": [
+                                                "点击【取消】"
+                                              ],
+                                              "actions": [
+                                                "弹出弹窗",
+                                                "取消",
+                                                "点击【取消】",
+                                                "关闭弹窗"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "弹窗",
+                                                "取消"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": null,
+                                              "embedding": null
+                                            }
+                                          ],
+                                          "children": [
+                                            {
+                                              "id": "node-36",
+                                              "title": "点击确认则弹窗提示发货成功",
+                                              "level": 12,
+                                              "content": "弹窗标题：发货成功\n弹窗内容：您的订单全部发货成功\n弹窗选项：【关闭】点击则关闭弹窗停留当前页面",
+                                              "normalized_content": "发货成功弹窗\n发货成功弹窗，弹窗标题，发货成功\n发货成功弹窗，弹窗内容，您的订单全部发货成功\n发货成功弹窗，弹窗选项，关闭，点击则关闭弹窗停留当前页面",
+                                              "node_type": "requirement",
+                                              "semantic_blocks": [
+                                                {
+                                                  "raw_text": "发货成功弹窗",
+                                                  "block_type": "description",
+                                                  "source_type": "content",
+                                                  "conditions": [],
+                                                  "actions": [
+                                                    "发货",
+                                                    "弹窗"
+                                                  ],
+                                                  "constraints": [],
+                                                  "entities": [
+                                                    "发货成功弹窗"
+                                                  ],
+                                                  "is_noise": false,
+                                                  "source_node_path": null,
+                                                  "source_title": null,
+                                                  "embedding": null
+                                                },
+                                                {
+                                                  "raw_text": "发货成功弹窗，弹窗标题，发货成功",
+                                                  "block_type": "description",
+                                                  "source_type": "content",
+                                                  "conditions": [],
+                                                  "actions": [
+                                                    "弹出“发货成功”弹窗",
+                                                    "显示弹窗标题“发货成功”"
+                                                  ],
+                                                  "constraints": [],
+                                                  "entities": [
+                                                    "发货成功弹窗",
+                                                    "弹窗标题",
+                                                    "发货成功"
+                                                  ],
+                                                  "is_noise": false,
+                                                  "source_node_path": null,
+                                                  "source_title": null,
+                                                  "embedding": null
+                                                },
+                                                {
+                                                  "raw_text": "发货成功弹窗，弹窗内容，您的订单全部发货成功",
+                                                  "block_type": "description",
+                                                  "source_type": "content",
+                                                  "conditions": [
+                                                    "发货成功"
+                                                  ],
+                                                  "actions": [
+                                                    "显示发货成功弹窗",
+                                                    "提示订单全部发货成功"
+                                                  ],
+                                                  "constraints": [],
+                                                  "entities": [
+                                                    "弹窗",
+                                                    "订单"
+                                                  ],
+                                                  "is_noise": false,
+                                                  "source_node_path": null,
+                                                  "source_title": null,
+                                                  "embedding": null
+                                                },
+                                                {
+                                                  "raw_text": "发货成功弹窗，弹窗选项，关闭，点击则关闭弹窗停留当前页面",
+                                                  "block_type": "flow",
+                                                  "source_type": "content",
+                                                  "conditions": [
+                                                    "点击关闭"
+                                                  ],
+                                                  "actions": [
+                                                    "弹出“发货成功”弹窗",
+                                                    "点击关闭选项",
+                                                    "关闭弹窗",
+                                                    "停留当前页面"
+                                                  ],
+                                                  "constraints": [],
+                                                  "entities": [
+                                                    "发货成功弹窗",
+                                                    "弹窗选项",
+                                                    "关闭",
+                                                    "当前页面"
+                                                  ],
+                                                  "is_noise": false,
+                                                  "source_node_path": null,
+                                                  "source_title": null,
+                                                  "embedding": null
+                                                }
+                                              ],
+                                              "children": [],
+                                              "images": []
+                                            }
+                                          ],
+                                          "images": []
+                                        }
+                                      ],
+                                      "images": []
+                                    }
+                                  ],
+                                  "images": []
+                                },
+                                {
+                                  "id": "node-37",
+                                  "title": "批量删除",
+                                  "level": 9,
+                                  "content": "（批量删除的上限？）",
+                                  "normalized_content": "无\n无，无，（批量删除的上限？）",
+                                  "node_type": "unknown",
+                                  "semantic_blocks": [],
+                                  "children": [
+                                    {
+                                      "id": "node-38",
+                                      "title": "选中需删除的订单，点击批量删除后弹出弹窗",
+                                      "level": 10,
+                                      "content": "弹窗标题：批量删除\n弹窗内容：确认批量删除吗？",
+                                      "normalized_content": "批量删除弹窗\n批量删除弹窗，弹窗展示，弹窗标题为批量删除，弹窗内容为确认批量删除吗？",
+                                      "node_type": "requirement",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "批量删除弹窗，弹窗展示",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "批量删除",
+                                            "弹窗展示"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "批量删除弹窗"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "弹窗标题为批量删除",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [
+                                            "弹窗标题必须为批量删除"
+                                          ],
+                                          "entities": [
+                                            "弹窗",
+                                            "标题"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "弹窗内容为确认批量删除吗？",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "弹窗",
+                                            "确认批量删除"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [
+                                            "弹窗"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [
+                                        {
+                                          "id": "node-39",
+                                          "title": "弹窗按钮：取消、确认",
+                                          "level": 11,
+                                          "content": "点击【取消】关闭弹窗\n点击【确认】则删除已选中的订单",
+                                          "normalized_content": "弹窗\n弹窗，取消按钮，点击【取消】关闭弹窗\n弹窗，确认按钮，点击【确认】则删除已选中的订单",
+                                          "node_type": "requirement",
+                                          "semantic_blocks": [
+                                            {
+                                              "raw_text": "弹窗",
+                                              "block_type": "description",
+                                              "source_type": "content",
+                                              "conditions": [],
+                                              "actions": [
+                                                "弹出窗口"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "弹窗"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": null,
+                                              "embedding": null
+                                            },
+                                            {
+                                              "raw_text": "弹窗，取消按钮，点击【取消】关闭弹窗",
+                                              "block_type": "flow",
+                                              "source_type": "content",
+                                              "conditions": [
+                                                "点击【取消】"
+                                              ],
+                                              "actions": [
+                                                "点击【取消】",
+                                                "关闭弹窗"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "弹窗",
+                                                "取消按钮"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": null,
+                                              "embedding": null
+                                            },
+                                            {
+                                              "raw_text": "弹窗，确认按钮，点击【确认】则删除已选中的订单",
+                                              "block_type": "flow",
+                                              "source_type": "content",
+                                              "conditions": [
+                                                "点击【确认】"
+                                              ],
+                                              "actions": [
+                                                "弹出弹窗",
+                                                "点击确认",
+                                                "删除已选中的订单"
+                                              ],
+                                              "constraints": [],
+                                              "entities": [
+                                                "弹窗",
+                                                "确认按钮",
+                                                "订单"
+                                              ],
+                                              "is_noise": false,
+                                              "source_node_path": null,
+                                              "source_title": null,
+                                              "embedding": null
+                                            }
+                                          ],
+                                          "children": [],
+                                          "images": []
+                                        }
+                                      ],
+                                      "images": []
+                                    }
+                                  ],
+                                  "images": []
+                                }
+                              ],
+                              "images": []
+                            },
+                            {
+                              "id": "node-40",
+                              "title": "打印列表",
+                              "level": 8,
+                              "content": "",
+                              "normalized_content": "",
+                              "node_type": "unknown",
+                              "semantic_blocks": [],
+                              "children": [
+                                {
+                                  "id": "node-41",
+                                  "title": "查询条件筛选项",
+                                  "level": 9,
+                                  "content": "筛选条件无创建时间时，默认仅查询最近一周数据\n创建时间\n打印时间\n运单号-已支持多多运单查询\n订单号\n收件人\n收件人手机\n发件人\n发件人手机",
+                                  "normalized_content": "筛选条件\n筛选条件，查询条件，支持按创建时间，打印时间，运单号（已支持多多运单查询），订单号，收件人，收件人手机，发件人，发件人手机进行筛选，当筛选条件无创建时间时默认仅查询最近一周数据",
+                                  "node_type": "requirement",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "筛选条件，查询条件，支持按创建时间，打印时间，运单号（已支持多多运单查询），订单号，收件人，收件人手机，发件人，发件人手机进行筛选",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "按条件进行筛选",
+                                        "查询多多运单"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "筛选条件",
+                                        "查询条件",
+                                        "创建时间",
+                                        "打印时间",
+                                        "运单号",
+                                        "多多运单",
+                                        "订单号",
+                                        "收件人",
+                                        "收件人手机",
+                                        "发件人",
+                                        "发件人手机"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "当筛选条件无创建时间时默认仅查询最近一周数据",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "筛选条件无创建时间"
+                                      ],
+                                      "actions": [
+                                        "查询最近一周数据"
+                                      ],
+                                      "constraints": [
+                                        "无创建时间筛选条件时，仅查询最近一周数据"
+                                      ],
+                                      "entities": [
+                                        "筛选条件",
+                                        "创建时间"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [
+                                    {
+                                      "id": "node-42",
+                                      "title": "打印状态",
+                                      "level": 10,
+                                      "content": "未打印\n提交打印\n打印成功\n打印失败",
+                                      "normalized_content": "打印\n打印 → 打印 → 打印状态（未打印，提交打印，打印成功，打印失败）",
+                                      "node_type": "requirement",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "打印",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "打印"
+                                          ],
+                                          "constraints": [],
+                                          "entities": [],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        },
+                                        {
+                                          "raw_text": "打印 → 打印 → 打印状态（未打印，提交打印，打印成功，打印失败）",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [
+                                            "打印",
+                                            "提交打印"
+                                          ],
+                                          "constraints": [
+                                            "打印状态只能为未打印、提交打印、打印成功或打印失败"
+                                          ],
+                                          "entities": [
+                                            "打印状态"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": []
+                                    },
+                                    {
+                                      "id": "node-43",
+                                      "title": "下单终端",
+                                      "level": 10,
+                                      "content": "PC端\n微信小程序\n支付宝小程序",
+                                      "normalized_content": "PC端，微信小程序，支付宝小程序\nPC端 → 无 → 无\n微信小程序 → 无 → 无\n支付宝小程序 → 无 → 无",
+                                      "node_type": "requirement",
+                                      "semantic_blocks": [
+                                        {
+                                          "raw_text": "PC端，微信小程序，支付宝小程序",
+                                          "block_type": "description",
+                                          "source_type": "content",
+                                          "conditions": [],
+                                          "actions": [],
+                                          "constraints": [],
+                                          "entities": [
+                                            "PC端",
+                                            "微信小程序",
+                                            "支付宝小程序"
+                                          ],
+                                          "is_noise": false,
+                                          "source_node_path": null,
+                                          "source_title": null,
+                                          "embedding": null
+                                        }
+                                      ],
+                                      "children": [],
+                                      "images": []
+                                    }
+                                  ],
+                                  "images": []
+                                },
+                                {
+                                  "id": "node-44",
+                                  "title": "按钮",
+                                  "level": 9,
+                                  "content": "查询\n重置",
+                                  "normalized_content": "查询与重置模块\n查询与重置模块，操作区，查询，执行查询操作，重置，执行重置操作",
+                                  "node_type": "requirement",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "查询与重置模块",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "查询与重置模块"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "查询与重置模块，操作区，查询，执行查询操作",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "查询",
+                                        "执行查询操作"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "查询与重置模块",
+                                        "操作区",
+                                        "查询"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "重置，执行重置操作",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "重置",
+                                        "执行重置操作"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": []
+                                },
+                                {
+                                  "id": "node-45",
+                                  "title": "批量打印",
+                                  "level": 9,
+                                  "content": "可以筛选列表进行打印，不筛选的情况下，默认打印全部\n订单支持重复打印，【已取消】的订单无法勾选打印\n打印最大限制100，超过100单不可选择",
+                                  "normalized_content": "订单打印\n订单打印 → 筛选打印 → 可以筛选列表进行打印，不筛选的情况下默认打印全部\n订单打印 → 打印规则 → 订单支持重复打印，【已取消】的订单无法勾选打印\n订单打印 → 数量限制 → 打印最大限制100，超过100单不可选择",
+                                  "node_type": "requirement",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "可以筛选列表进行打印",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "筛选列表",
+                                        "打印列表"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "列表"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "不筛选的情况下默认打印全部",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "不筛选的情况下"
+                                      ],
+                                      "actions": [
+                                        "打印全部"
+                                      ],
+                                      "constraints": [
+                                        "不筛选时默认打印全部"
+                                      ],
+                                      "entities": [],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "订单支持重复打印",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "重复打印订单"
+                                      ],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "【已取消】的订单无法勾选打印",
+                                      "block_type": "constraint",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "订单状态为已取消"
+                                      ],
+                                      "actions": [
+                                        "勾选",
+                                        "打印"
+                                      ],
+                                      "constraints": [
+                                        "已取消的订单不允许勾选打印"
+                                      ],
+                                      "entities": [
+                                        "订单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "打印最大限制100",
+                                      "block_type": "constraint",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [
+                                        "打印"
+                                      ],
+                                      "constraints": [
+                                        "打印数量最多为100"
+                                      ],
+                                      "entities": [],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "超过100单不可选择",
+                                      "block_type": "constraint",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "超过100单"
+                                      ],
+                                      "actions": [
+                                        "不可选择"
+                                      ],
+                                      "constraints": [
+                                        "超过100单时不可选择"
+                                      ],
+                                      "entities": [
+                                        "单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": []
+                                },
+                                {
+                                  "id": "node-46",
+                                  "title": "选择打印机",
+                                  "level": 9,
+                                  "content": "https://open.taobao.com/doc.htm?docId=107052&docType=1#ss11\n历史文档：开放平台-文档中心\n云打印操作手册：云打印编辑器使用手册.pdf\n打印模版：设计器",
+                                  "normalized_content": "开放平台-文档中心\n历史文档，开放平台-文档中心，历史文档对应开放平台-文档中心\n云打印操作手册，云打印编辑器使用手册.pdf，云打印操作手册对应云打印编辑器使用手册.pdf\n打印模版，设计器，打印模版对应设计器",
+                                  "node_type": "unknown",
+                                  "semantic_blocks": [],
+                                  "children": [],
+                                  "images": []
+                                },
+                                {
+                                  "id": "node-47",
+                                  "title": "近一周发货数据",
+                                  "level": 9,
+                                  "content": "点击后下方明细数据默认展示近7天的数据",
+                                  "normalized_content": "下方明细数据\n下方明细数据，数据展示，点击后默认展示近7天的数据",
+                                  "node_type": "requirement",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "下方明细数据",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "明细数据"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "下方明细数据，数据展示，点击后默认展示近7天的数据",
+                                      "block_type": "rule",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "点击后"
+                                      ],
+                                      "actions": [
+                                        "展示明细数据",
+                                        "点击",
+                                        "展示近7天的数据"
+                                      ],
+                                      "constraints": [
+                                        "默认展示近7天的数据"
+                                      ],
+                                      "entities": [
+                                        "明细数据"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": []
+                                },
+                                {
+                                  "id": "node-48",
+                                  "title": "近一月发货数据",
+                                  "level": 9,
+                                  "content": "点击后下方明细数据默认展示近30天的数据",
+                                  "normalized_content": "下方明细数据\n下方明细数据，明细数据，点击后默认展示近30天的数据",
+                                  "node_type": "requirement",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "下方明细数据",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "明细数据"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "下方明细数据，明细数据，点击后默认展示近30天的数据",
+                                      "block_type": "flow",
+                                      "source_type": "content",
+                                      "conditions": [
+                                        "点击明细数据后"
+                                      ],
+                                      "actions": [
+                                        "点击明细数据",
+                                        "展示近30天的数据"
+                                      ],
+                                      "constraints": [
+                                        "默认展示近30天的数据"
+                                      ],
+                                      "entities": [
+                                        "明细数据"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": []
+                                },
+                                {
+                                  "id": "node-49",
+                                  "title": "明细字段",
+                                  "level": 9,
+                                  "content": "运单号\n订单号\n收件人\n收件人联系方式\n收件人省\n收件人市\n收件人区县\n收件人地址\n发件人\n发件人联系方式\n发件城市\n物流产品\n创建时间\n订单来源\n商品名称\n订单备注\n运单状态\n打印时间\n下单终端\n打印状态",
+                                  "normalized_content": "订单/运单列表\n订单/运单列表，字段，运单号，订单号，收件人，收件人联系方式，收件人省，收件人市，收件人区县，收件人地址，发件人，发件人联系方式，发件城市，物流产品，创建时间，订单来源，商品名称，订单备注，运单状态，打印时间，下单终端，打印状态",
+                                  "node_type": "requirement",
+                                  "semantic_blocks": [
+                                    {
+                                      "raw_text": "订单/运单列表",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单",
+                                        "运单"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    },
+                                    {
+                                      "raw_text": "订单/运单列表，字段，运单号，订单号，收件人，收件人联系方式，收件人省，收件人市，收件人区县，收件人地址，发件人，发件人联系方式，发件城市，物流产品，创建时间，订单来源，商品名称，订单备注，运单状态，打印时间，下单终端，打印状态",
+                                      "block_type": "description",
+                                      "source_type": "content",
+                                      "conditions": [],
+                                      "actions": [],
+                                      "constraints": [],
+                                      "entities": [
+                                        "订单列表",
+                                        "运单列表",
+                                        "运单号",
+                                        "订单号",
+                                        "收件人",
+                                        "收件人联系方式",
+                                        "收件人省",
+                                        "收件人市",
+                                        "收件人区县",
+                                        "收件人地址",
+                                        "发件人",
+                                        "发件人联系方式",
+                                        "发件城市",
+                                        "物流产品",
+                                        "创建时间",
+                                        "订单来源",
+                                        "商品名称",
+                                        "订单备注",
+                                        "运单状态",
+                                        "打印时间",
+                                        "下单终端",
+                                        "打印状态"
+                                      ],
+                                      "is_noise": false,
+                                      "source_node_path": null,
+                                      "source_title": null,
+                                      "embedding": null
+                                    }
+                                  ],
+                                  "children": [],
+                                  "images": []
+                                }
+                              ],
+                              "images": []
+                            }
+                          ],
+                          "images": []
+                        }
+                      ],
+                      "images": []
+                    }
+                  ],
+                  "images": []
+                }
+              ],
+              "images": []
+            }
+          ],
+          "images": []
+        }
+      ],
+      "images": []
+    }
+  ],
+  "images": []
+}

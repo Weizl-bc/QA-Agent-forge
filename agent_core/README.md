@@ -58,3 +58,61 @@
    - Vector DB
    - Test case system
    - QA agent
+
+
+## AgentPRD-Flow
+
+### 评审目标
+1. 排查PRD中模糊的点，例如：xxx内容略、xxx等以后补充
+2. 排查业务逻辑闭环
+3. 排查PRD中边界值问题
+
+---
+```mermaid
+flowchart LR
+    A["PRD 原文"] --> B["无损结构解析"]
+    B --> C["ReviewContext"]
+    C --> D["业务事实提取"]
+    C --> E["模糊证据提取"]
+    D --> F["逻辑闭环检查"]
+    D --> G["边界完整性检查"]
+    E --> H["模糊项检查"]
+    F --> I["证据校验与去重"]
+    G --> I
+    H --> I
+    I --> J["结构化评审报告"]
+```
+
+### PRD 自动评审调用
+
+默认先复用完整 PRD 清洗流程，再通过三个独立 LLM Reviewer 生成结构化报告：
+
+```python
+from agent_core.agents.prd_review.agent import PrdReviewAgent
+from agent_core.models.prd.prd_review_agent_input import PrdReviewAgentInput
+
+report = PrdReviewAgent().run(
+    PrdReviewAgentInput(input_path="/path/to/requirement.md")
+)
+print(report.model_dump_json(indent=2))
+```
+
+如果调用方已经持有 `MdNode`，可使用 `review_node`，避免重复解析：
+
+```python
+report = PrdReviewAgent().review_node(
+    md_node,
+    source_path="requirement.md",
+)
+```
+
+输出模型为 `PrdReviewReport`。三个维度分别是 `ambiguity`、
+`logic_closure` 和 `boundary_value`。当某个 Reviewer 的模型调用失败时，
+报告通过 `status` 和 `errors` 返回可理解的错误，不会用规则结果冒充 LLM 结论。
+
+测试：
+
+```bash
+uv run pytest -q agent_core/test/test_prd_review_agent.py
+uv run pytest -q agent_core/test/test_prd_review_agent_real_llm.py -s
+```

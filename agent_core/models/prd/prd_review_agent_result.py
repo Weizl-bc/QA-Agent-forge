@@ -1,8 +1,6 @@
-from pydantic import BaseModel
+from agent_core.models.prd.prd_review_models import PrdReviewReport
 
 
-class PrdReviewAgentResult(BaseModel):
-    """
+PrdReviewAgentResult = PrdReviewReport
 
-    """
-
+__all__ = ["PrdReviewAgentResult"]

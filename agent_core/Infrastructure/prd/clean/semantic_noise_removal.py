@@ -228,6 +228,7 @@ def _llm_extract_semantic_with_raw_content(
 def _normalization_tree_content_llm(
     content: str,
     node_title: str = "",
+    node_path: str = "",
 ) -> PrdNormalizationResult:
     """
     标准化节点正文，并判断其是否包含可检索的业务信息。
@@ -237,6 +238,7 @@ def _normalization_tree_content_llm(
         ("system", PARSER_MD_TO_NORMAL_TEXT_PROMPT),
         (
             "human",
+            "【节点路径】{node_path}\n"
             "【节点标题】{node_title}\n"
             "【节点正文】\n{content}\n\n"
             "请输出标准化结果 JSON。",
@@ -245,6 +247,7 @@ def _normalization_tree_content_llm(
     result = (prompt | llm).invoke({
         "content": content,
         "node_title": node_title,
+        "node_path": node_path,
     })
 
     for attempt in range(1, MAX_SEMANTIC_PARSE_ATTEMPTS + 1):
@@ -277,6 +280,7 @@ def _normalization_tree_content_llm(
                 "invalid_output": response_content,
                 "content": content,
                 "node_title": node_title,
+                "node_path": node_path,
             })
 
     raise RuntimeError("正文标准化重试流程异常结束")
@@ -414,6 +418,7 @@ def _normalize_and_extract_node(node: MdNode) -> None:
         normalization_result = _normalization_tree_content_llm(
             node.content,
             node_title=node.title,
+            node_path=node.source_path,
         )
         node.normalized_content = normalization_result.normalized_content
         node.is_retrievable = normalization_result.is_retrievable
@@ -561,7 +566,7 @@ def _pre_semantic_noise_removal(
 
 def semantic_noise_removal(
     root: MdNode,
-    max_workers: int = 4,
+    max_workers: int = 2,
 ) -> list[dict[str, Any]]:
     """
     语义噪声清洗
@@ -588,100 +593,3 @@ def semantic_noise_removal(
         })
         stack.extend(reversed(pop_node.children))
     return result
-
-
-if __name__ == "__main__": print(_llm_extract_semantic_with_raw_content(normalized_content="""
-打单发货-订单管理页面
-1. 待发货Tab
-表格查询条件筛选：创建时间、收件人姓名、收件人手机、收件省市。
-表格字段：订单号、物流产品、收件人名称、发件人名称、发件人手机号、发件城市、包裹重量（只有两种：寄付、到付）、物品类型、保价（只有两种：是、否）、货品声明价值、备注、揽收时间（默认为当日揽）、创建时间。
-在表格上方包含功能按钮：批量导入、批量发货。
-""",
-raw_content=remove_redundant_newlines("""
-#### PC端整体页面结构：
-
-*   **打单发货：**
-    
-    *   **订单管理**
-        
-        *   **发货打单**
-            
-            *   **待发货**
-                
-                *   **查询条件筛选项：**筛选条件无创建时间时，默认查询最近三个月的数据
-                    
-                    *   创建时间
-                        
-                    *   收件人姓名
-                        
-                    *   收件人手机
-                        
-                    *   收件省市
-                        
-                *   **明细字段：**
-                    
-                    *   订单号
-                        
-                    *   物流产品：
-                        
-                        *   本期默认为「菜鸟标快」
-                            
-                    *   收件人名称
-                        
-                    *   收件人手机号
-                        
-                    *   收件人地址
-                        
-                    *   发件人名称
-                        
-                    *   发件人手机号
-                        
-                    *   发件城市
-                        
-                    *   包裹重量
-                        
-                    *   支付方式：
-                        
-                        *   寄付
-                            
-                        *   到付
-                            
-                    *   物品类型
-                        
-                    *   保价：
-                        
-                        *   是
-                            
-                        *   否
-                            
-                    *   货品声明价值
-                        
-                    *    备注
-                        
-                    *   揽收时间：
-                        
-                        *   默认为「当日揽」
-                            
-                    *   创建时间
-                        
-                *   **批量导入：**使用菜鸟模版[菜鸟速递订单导入模板（最多一次导入1000条）.xlsx](https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fcilogistics-oss.oss-cn-hangzhou.aliyuncs.com%2Fcnd%2F%25E8%258F%259C%25E9%25B8%259F%25E9%2580%259F%25E9%2580%2592%25E8%25AE%25A2%25E5%258D%2595%25E5%25AF%25BC%25E5%2585%25A5%25E6%25A8%25A1%25E6%259D%25BF%25EF%25BC%2588%25E6%259C%2580%25E5%25A4%259A%25E4%25B8%2580%25E6%25AC%25A1%25E5%25AF%25BC%25E5%2585%25A51000%25E6%259D%25A1%25EF%25BC%2589.xlsx&wdOrigin=BROWSELINK)
-                    
-                    *   导单过程中有进度提醒
-                        
-                    *   导单完成后，如有导入失败的情况，页面空白处会显示导入错误的行，与错误原因
-                        
-                    *   导入的订单可以在”导入记录“查看
-                        
-                    *   单次导入上限：1000条，
-                        
-                *   **批量发货：****（批量发货的上限？）**
-                    
-                    *   发货逻辑：
-                        
-                        *   默认揽收时间为「当日揽」，即90服务产品
-                            
-                        *   默认物流产品为「菜鸟标快」
-                            
-                        *   不支持包装服务，若客户有包装诉求，可在小件员端让小件员进行添加
-                 
-""")))

@@ -1,8 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class PrdReviewAgentInput(BaseModel):
+    """PRD Review Agent 的文件输入配置。"""
 
-    input_path: str             # prd的路径（支持，相对路径、绝对路径、网络路径url）
-
-    read_local_json: bool       # 是否读取本地的mdNode json文件
+    input_path: str
+    read_local_json: bool = False
+    use_cleaning_pipeline: bool = True
+    max_chunk_chars: int = Field(default=24_000, ge=1)

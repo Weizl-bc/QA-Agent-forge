@@ -10,9 +10,14 @@ from markdown_it.token import Token
 from agent_core.common.content_utils import remove_redundant_newlines
 from agent_core.common.file_utils import read_md_file
 from agent_core.common.tree_utils import walk_md_tree
+from agent_core.Infrastructure.prd.prd_page_extract import (
+    PageCatalogResolver,
+    PageRefExtractionError,
+    contains_page_directive,
+    extract_page_refs,
+)
 from agent_core.models.prd.md_image_ref import MdImageRef
 from agent_core.models.prd.md_node import MdNode
-from agent_core.models.prd.page_ref import PageRef
 
 
 # 旧解析流程和新 AST 解析流程共用同一套 Markdown 图片语法。
@@ -30,14 +35,7 @@ REFERENCE_FILE_PATTERN = re.compile(
     r"\.(?:pdf|docx?|xlsx?|csv|pptx?|zip|rar))$",
     flags=re.IGNORECASE,
 )
-SYSTEM_INFO_PATTERN = re.compile(
-    r"!系统信息\s*[:：]\s*(?P<name>[^;；\r\n]+?)\s*[;；]"
-)
-PAGE_INFO_PATTERN = re.compile(
-    r"!页面信息\s*[:：]\s*(?P<name>[^;；\r\n]+?)\s*"
-    r"(?:[;；]|(?=\r?$))",
-    flags=re.MULTILINE,
-)
+
 
 @dataclass
 class MarkdownListItem:
@@ -62,6 +60,7 @@ def _extract_md_title(md_title: str) -> tuple[str, int]:
         level = len(match.group(1))
         title = match.group(2)
     return title, level
+
 
 def _parser_md_prd_to_tree(input_path: str) -> MdNode:
     """
@@ -152,96 +151,17 @@ def _prd_content_standardization(root: MdNode) -> None:
     walk_md_tree(root, handler)
 
 
-def _strip_page_markers(text: str) -> tuple[str, list[str], list[str]]:
-    """
-    提取并删除页面标记。
-
-    同时兼容半角/全角冒号和分号。页面信息允许位于行尾而不写分号，
-    但系统信息仍以分号作为边界，避免误吞后续页面标记。
-    """
-    system_names = [
-        match.group("name").strip()
-        for match in SYSTEM_INFO_PATTERN.finditer(text)
-        if match.group("name").strip()
-    ]
-    page_names = [
-        match.group("name").strip()
-        for match in PAGE_INFO_PATTERN.finditer(text)
-        if match.group("name").strip()
-    ]
-    cleaned = SYSTEM_INFO_PATTERN.sub("", text)
-    cleaned = PAGE_INFO_PATTERN.sub("", cleaned)
-    cleaned = re.sub(r"[ \t]+", " ", cleaned)
-    cleaned = re.sub(r" *\n *", "\n", cleaned).strip()
-    return cleaned, system_names, page_names
-
-
-def _extract_and_propagate_page_refs(root: MdNode) -> None:
-    """
-    将 Markdown 页面标记转换为 PageRef，并向后代继承最近页面上下文。
-
-    显式声明页面的节点覆盖继承上下文；未声明页面的后代获得父节点最近
-    的页面信息。页面标记属于元数据，因此不会继续留在 title/content 中。
-    """
-    def visit(node: MdNode, inherited_refs: list[PageRef]) -> None:
-        node.title, title_systems, title_pages = _strip_page_markers(
-            node.title
-        )
-        node.content, content_systems, content_pages = _strip_page_markers(
-            node.content
-        )
-        system_names = list(dict.fromkeys([
-            *title_systems,
-            *content_systems,
-        ]))
-        page_names = list(dict.fromkeys([
-            *title_pages,
-            *content_pages,
-        ]))
-
-        explicit_refs: list[PageRef] = []
-        if system_names and page_names:
-            system_name = system_names[-1]
-            explicit_refs = [
-                PageRef(
-                    page_id=f"{system_name}:{page_name}",
-                    system_name=system_name,
-                    page_name=page_name,
-                    relation_type="primary",
-                    confidence=1.0,
-                    matched_by=["系统信息", "页面信息"],
-                )
-                for page_name in page_names
-            ]
-
-        active_refs = explicit_refs or [
-            page_ref.model_copy(
-                update={
-                    "matched_by": list(dict.fromkeys([
-                        *page_ref.matched_by,
-                        "父节点继承",
-                    ])),
-                },
-                deep=True,
-            )
-            for page_ref in inherited_refs
-        ]
-        node.page_refs = active_refs
-
-        for child in node.children:
-            visit(child, active_refs)
-
-    visit(root, [])
-
-
-def standardization_prd_md(input_path: str) -> MdNode:
+def standardization_prd_md(
+    input_path: str,
+    page_resolver: PageCatalogResolver | None = None,
+) -> MdNode:
     """
     标准化prd
     """
     node = _parser_md_prd_to_tree(input_path)
     _prd_img_processor(node)
     _prd_content_standardization(node)
-    _extract_and_propagate_page_refs(node)
+    extract_page_refs(node, page_resolver)
     _fill_source_context(node)
 
     return node
@@ -401,6 +321,13 @@ def _parse_markdown_list_item(
             if clean_text:
                 text_parts.append(clean_text)
             images.extend(inline_images)
+            index += 1
+            continue
+
+        if token.type == "html_block" and contains_page_directive(
+            token.content
+        ):
+            text_parts.append(token.content.strip())
             index += 1
             continue
 
@@ -582,6 +509,12 @@ def _convert_list_items_to_md_nodes(
             )
             continue
 
+        if contains_page_directive(item.text):
+            raise PageRefExtractionError(
+                "页面标签只能标记标题节点或拥有子列表的业务节点，"
+                f"不能标记列表叶子：{item.text.strip()}"
+            )
+
         content, references = _split_text_and_references(item.text)
         if content:
             _append_node_content(parent, content)
@@ -726,6 +659,7 @@ def _fill_source_context(root: MdNode) -> None:
 def _parser_md_prd_to_business_tree(
     input_path: str,
     max_node_content_chars: int = 2000,
+    page_resolver: PageCatalogResolver | None = None,
 ) -> MdNode:
     """
     使用 markdown-it-py 构造细粒度 PRD 业务树。
@@ -822,13 +756,20 @@ def _parser_md_prd_to_business_tree(
             index += 1
             continue
 
+        if token.type == "html_block" and contains_page_directive(
+            token.content
+        ):
+            _append_node_content(current_node, token.content.strip())
+            index += 1
+            continue
+
         if token.type in {"fence", "code_block"}:
             _append_node_content(current_node, token.content)
 
         index += 1
 
     _prd_content_standardization(root)
-    _extract_and_propagate_page_refs(root)
+    extract_page_refs(root, page_resolver)
     _split_oversized_node_content(
         root,
         node_counter,
@@ -841,6 +782,7 @@ def _parser_md_prd_to_business_tree(
 def standardization_prd_md_with_business_structure(
     input_path: str,
     max_node_content_chars: int = 2000,
+    page_resolver: PageCatalogResolver | None = None,
 ) -> MdNode:
     """
     新版标准化入口：解析 Markdown 标题、嵌套列表和图片业务归属。
@@ -851,6 +793,7 @@ def standardization_prd_md_with_business_structure(
     return _parser_md_prd_to_business_tree(
         input_path=input_path,
         max_node_content_chars=max_node_content_chars,
+        page_resolver=page_resolver,
     )
 
 
